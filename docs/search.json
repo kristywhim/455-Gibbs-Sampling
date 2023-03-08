@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "Bayesian statistical world",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\nBackground: Bayesian V.S. Frequentist\r\nBayes Rule\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-08T15:20:16-06:00"
+    },
+    {
+      "path": "gibbs.html",
+      "title": "Gibbs Sampling",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\nConcept\r\nAn example\r\nGibbs Sampling and Markov chain Monte Carlo (MCMC)\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-08T15:20:18-06:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Mathematical Statistics: Gibbs Sampling",
+      "description": "Welcome to the website. This website introduces Gibbs Sampling in Bayesian statistic world. This is a class project from course MATH/ STAT 455: Mathematical Statistics at Macalester College. The contents in this blog are collaborative efforts from Kristy Ma and Regan Brodine.\n",
+      "author": [],
+      "contents": "\r\nHi!\r\nTo start exploring, please simply navigate to tabs on the upper right corner. The table of contents is here:\r\n“Home”: This page\r\n“Intro to Bayesian”: Bayesian philosophy; Bayes rules\r\n“Gibbs Sampling”: Gibbs Sampling Concept; Examples; Gibbs Sampling and Markov chain Monte Carlo (MCMC)\r\n“Applications”: Gibbs Sampling in statistical genetics; A simulation study\r\n“Wrap-up”: Outro; Other MCMC algorithms\r\nHave fun!\r\n\r\nIf you have any questions, please reach out to kristy20011001@gmail.com and rbrodine@macalester.edu. Thank you!\r\n\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-08T15:20:19-06:00"
+    },
+    {
+      "path": "sim.html",
+      "title": "Applying Gibbs Sampling",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\nGibbs Sampling in statistical genetics\r\nComputation: A small simulation\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-08T15:20:21-06:00"
+    },
+    {
+      "path": "wrapup.html",
+      "title": "Outro",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\r\nA few more…\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-08T15:20:22-06:00"
+    }
+  ],
+  "collections": []
+}

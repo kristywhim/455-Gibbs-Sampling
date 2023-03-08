@@ -1,0 +1,15 @@
+---
+title: "Gibbs Sampling"
+description: |
+  Some additional details about the website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Concept {#gibbs}
+
+# An example
+
+# Gibbs Sampling and Markov chain Monte Carlo (MCMC)

@@ -1,0 +1,30 @@
+---
+title: "Mathematical Statistics: Gibbs Sampling"
+description: |
+  Welcome to the website. This website introduces Gibbs Sampling in Bayesian statistic world. This is a class project from course MATH/ STAT 455: Mathematical Statistics at Macalester College. The contents in this blog are collaborative efforts from Kristy Ma and Regan Brodine.
+site: distill::distill_website
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
+
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+```
+
+# Hi!
+To start exploring, please simply navigate to tabs on the upper right corner. The table of contents is here:
+
+1) "Home": This page
+2) "Intro to Bayesian": Bayesian philosophy; Bayes rules
+3) "Gibbs Sampling": Gibbs Sampling Concept; Examples; Gibbs Sampling and Markov chain Monte Carlo (MCMC)
+4) "Applications": Gibbs Sampling in statistical genetics; A simulation study
+5) "Wrap-up": Outro; Other MCMC algorithms
+
+**Have fun!**
+
+>If you have any questions, please reach out to *kristy20011001@gmail.com* and *rbrodine@macalester.edu*. Thank you!

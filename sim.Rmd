@@ -1,0 +1,9 @@
+---
+title: "Applying Gibbs Sampling"
+description: |
+  Some additional details about the website
+---
+
+# Gibbs Sampling in statistical genetics {#sim}
+
+# Computation: A small simulation
