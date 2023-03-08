@@ -2,6 +2,7 @@
 title: "Bayesian statistical world"
 description: |
   Some additional details about the website
+
 ---
 
 ```{r setup, include=FALSE}
