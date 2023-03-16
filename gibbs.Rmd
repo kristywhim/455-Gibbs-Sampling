@@ -37,8 +37,9 @@ Step 2: Sample $\theta_2^{(m)}$ from $\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(
 
 Step r: Sample $\theta_r^{(m)}$ from $\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})$
 
-By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$, and thus is the distribution $\pi (\theta)$. (Pritchard, 2000)
+By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$, and thus is the distribution $\pi (\theta)$. (Pritchard, 2000.)
 
 # An example
 
+Let's take a look at a simple example with discrete random variables.
 # Gibbs Sampling and Markov chain Monte Carlo (MCMC)

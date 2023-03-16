@@ -6,15 +6,15 @@
       "description": "Some additional details about the website\n",
       "author": [],
       "contents": "\r\nBackground: Bayesian V.S. Frequentist\r\nBayes Rule\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-03-08T15:30:28-06:00"
+      "last_modified": "2023-03-16T16:52:17-05:00"
     },
     {
       "path": "gibbs.html",
       "title": "Gibbs Sampling",
       "description": "Some additional details about the website",
       "author": [],
-      "contents": "\r\nConcept\r\nAn example\r\nGibbs Sampling and Markov chain Monte Carlo (MCMC)\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-03-08T15:30:29-06:00"
+      "contents": "\r\nConcept\r\nGibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.\r\nGibbs Sampling Definition\r\nSuppose we want to obtain \\(n\\) samples of \\(X = (x_1, x_2, x_3, ..., x_d)\\) from a joint distribution \\(p(x,y)\\).\r\nOverview\r\n1. Set \\((x_0,y_0)\\) to some starting value.\r\n2. Sample \\(x_1 \\sim p(x|y_0)\\). Alternatively, \\(X|Y = y_0\\). This produces \\((x_1, y_0)\\).\r\n3. Then, sample \\(y_1 \\sim p(y|x_1)\\) to arrive at the second point in the distribution \\((x_1,y_1)\\)\r\n4. Repeat steps 2 and 3, M times.\r\nThis produces a sequence of pairs of random variables: \\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...\\) which satisfies the property of being a Markov chain.\r\nNote that the conditional distribution of \\((X_i,Y_i)\\), given all the previous pairs, only depends on \\((X_{i-1},Y_{i-1})\\)\r\n(Steorts)\r\nIn a Bayesian perspective, Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter \\(\\theta\\), \\(\\pi (\\theta)\\).\r\nFor initial conditions, suppose \\(\\theta\\) may be partitioned into \\(\\theta = (\\theta_1,...,\\theta_r)\\). It is then possible to simulate a random value of \\(\\theta_i\\) from a full conditional distribution \\(\\pi(\\theta_i | \\theta_1, \\theta_2, ..., \\theta_{i-1},\\theta_{i+1},...,\\theta_r)\\) for \\(i = 1, 2, ...\\). Then, these initial conditions can be used to simulate the distribution \\(\\pi (\\theta)\\). Start with initial values \\(\\theta^{(0)} = (\\theta_1^{(0)},...,\\theta_r^{(0)})\\). Then, use the following steps for \\(m = 1, 2, ...\\):\r\nStep 1: Sample \\(\\theta_1^{(m)}\\) from \\(\\pi(\\theta_1 | \\theta_2^{(m-1)}, \\theta_3^{(m-1)},..., \\theta_4^{(m-1)})\\)\r\nStep 2: Sample \\(\\theta_2^{(m)}\\) from \\(\\pi(\\theta_2 | \\theta_1^{(m)}, \\theta_3^{(m-1)},..., \\theta_d^{(m-1)})\\)\r\nStep r: Sample \\(\\theta_r^{(m)}\\) from \\(\\pi(\\theta_r | \\theta_1^{(m)}, \\theta_2^{(m)},..., \\theta_{r-1}^{(m)})\\)\r\nBy the Monte Carlo rules, it is easy to show that if \\(\\theta^{(m-1)}\\sim \\pi(\\theta)\\), then \\(\\theta^{(m)}\\sim \\pi(\\theta)\\), and thus is the distribution \\(\\pi (\\theta)\\). (Pritchard, 2000)\r\nAn example\r\nGibbs Sampling and Markov chain Monte Carlo (MCMC)\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-03-16T16:52:19-05:00"
     },
     {
       "path": "index.html",
@@ -22,7 +22,7 @@
       "description": "Welcome to the website. This website introduces Gibbs Sampling in Bayesian statistic world. This is a class project from course MATH/ STAT 455: Mathematical Statistics at Macalester College. The contents in this blog are collaborative efforts from Kristy Ma and Regan Brodine.\n",
       "author": [],
       "contents": "\r\nHi!\r\nTo start exploring, please simply navigate to tabs on the upper right corner. The table of contents is here:\r\n“Home”: This page\r\n“Intro to Bayesian”: Bayesian philosophy; Bayes rules\r\n“Gibbs Sampling”: Gibbs Sampling Concept; Examples; Gibbs Sampling and Markov chain Monte Carlo (MCMC)\r\n“Applications”: Gibbs Sampling in statistical genetics; A simulation study\r\n“Wrap-up”: Outro; Other MCMC algorithms\r\nHave fun!\r\n\r\nIf you have any questions, please reach out to kristy20011001@gmail.com and rbrodine@macalester.edu. Thank you!\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-03-08T15:30:32-06:00"
+      "last_modified": "2023-03-16T16:52:21-05:00"
     },
     {
       "path": "sim.html",
@@ -30,7 +30,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\r\nGibbs Sampling in statistical genetics\r\nComputation: A small simulation\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-03-08T15:30:33-06:00"
+      "last_modified": "2023-03-16T16:52:23-05:00"
     },
     {
       "path": "wrapup.html",
@@ -38,7 +38,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\r\nA few more…\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-03-08T15:30:35-06:00"
+      "last_modified": "2023-03-16T16:52:24-05:00"
     }
   ],
   "collections": ["posts/posts.json"]
