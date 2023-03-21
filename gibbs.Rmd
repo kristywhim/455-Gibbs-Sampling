@@ -13,9 +13,22 @@ knitr::opts_chunk$set(echo = FALSE)
 Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.
 
 **Gibbs Sampling Definition**
-Suppose we want to obtain $n$ samples of $X = (x_1, x_2, x_3, ..., x_d)$ from a joint distribution $p(x,y)$. 
+Suppose we want to obtain $n$ samples of $X = (x_1, x_2, x_3, ..., x_m)$ from a joint distribution $p(x,y)$. 
 
-*Overview*
+In Gibbs sampling, we will sample each $x^m$ conditional on others, that is, in iteration $(n+1)$:
+
+$$\begin{aligned} x_{n+1}^{(1)}&\sim P(x^{(1)}|x_n^{(2)},x_n^{(3)},...,x_n^{(m)}) \\ 
+
+x_{n+1}^{(2)}&\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)})  \\
+
+
+x_{n+1}^{(m)}&\sim P(x^{(m)}|x_{n+1}^{(1)},...,x_{n+1}^{(m-1)})
+
+\end{aligned}$$
+
+Gibbs sampler is a special case of the Metropolis-Hasting algorithm with the conditional distribution (source: Jingyi Jessica Li)
+
+*In Practice*
 1. Set $(x_0,y_0)$ to some starting value.
 2. Sample $x_1 \sim p(x|y_0)$. Alternatively, $X|Y = y_0$. This produces $(x_1, y_0)$.
 3. Then, sample $y_1 \sim p(y|x_1)$ to arrive at the second point in the distribution $(x_1,y_1)$
@@ -23,14 +36,14 @@ Suppose we want to obtain $n$ samples of $X = (x_1, x_2, x_3, ..., x_d)$ from a 
 
 This produces a sequence of pairs of random variables: $(X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...$ which satisfies the property of being a Markov chain.
 
-Note that the conditional distribution of $(X_i,Y_i)$, given all the previous pairs, only depends on $(X_{i-1},Y_{i-1})$
-(Steorts)
+*Note that the conditional distribution of $(X_i,Y_i)$, given all the previous pairs, only depends on $(X_{i-1},Y_{i-1})$ (Steorts)*
 
 
 In a Bayesian perspective, Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter $\theta$, $\pi (\theta)$. 
 
 For initial conditions, suppose $\theta$ may be partitioned into $\theta = (\theta_1,...,\theta_r)$. It is then possible to simulate a random value of $\theta_i$ from a full conditional distribution $\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)$ for $i = 1, 2, ...$. Then, these initial conditions can be used to simulate the distribution $\pi (\theta)$. Start with initial values $\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})$. Then, use the following steps for $m = 1, 2, ...$:
 
+*Bayesian Notes*
 Step 1: Sample $\theta_1^{(m)}$ from $\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})$
 
 Step 2: Sample $\theta_2^{(m)}$ from $\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})$
@@ -40,6 +53,105 @@ Step r: Sample $\theta_r^{(m)}$ from $\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(
 By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$, and thus is the distribution $\pi (\theta)$. (Pritchard, 2000.)
 
 # An example
+Consider an exponential model for observations $x = (x_1,...,x_n)$:
+
+$$p(x|a,b) = abe^{-abx} \quad \text{for} (x>0)$$
+and suppose the prior is:
+*ask kelsey about this*
+$$p(a,b) = e^{-a-b} \quad \text{for} (a,b>0)$$
+
+We want to sample from the posterior: $p(a,b|x)$. To start, we must look at likelihood.
+$$\begin{aligned} p(\vec{x}|a,b) &= \Pi_{i=1}^n p(x_i|a,b) \\ 
+&= \Pi_{i=1}^n abe^{-abx_i} \\ 
+&= (ab)^n e^{-ab\sum_{i=1}^nx_i}
+\end{aligned}$$
+
+However, since the function is symmetric for a and b, we only need to solve for one. We can derive the posterior distributions, $A$ and $B$, respectively:
+
+$$\begin{aligned} p(a|x,b) &\propto_a p(\vec{x}|a,b)p(a,b) \\ 
+&= (ab)^n e^{-ab\sum_{i=1}^nx_i} \times e^{-a-b} \\ 
+&= (ab)^n e^{-a-b-ab\sum_{i=1}^nx_i} \\ 
+&\propto_a a^ne^{-a(b\sum_{i=1}^nx_i)}
+\end{aligned}$$
+
+Thus, the posterior distributions:
+$$A \sim \text{Gamma}(n+1,b_n\sum_{i=1}^nx_i +1)$$
+$$B \sim \text{Gamma}(n+1,a_n\sum_{i=1}^nx_i +1)$$
+
+Then, we can apply our posterior distribution to Gibbs Sampling to find an estimate of the rate, $\lambda$, for our distribution.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(cache=TRUE)
+library(MASS)
+library(ggplot2)
+#######################################
+# This function is a Gibbs sampler
+#
+# Args
+# start.a: initial value for a
+# start.b: initial value for b
+# n.sims: number of iterations to run
+# data: observed data, should be in a
+# data frame with one column
+#
+# Returns:
+# A two column matrix with samples
+# for a in first column and
+# samples for b in second column
+#######################################
+```
+We are working with an exponential model that is dependent on variables a and b. Lambda = ab
+We will write out the actual equation later.
+
+```{r}
+sampleGibbs <- function(start.a, start.b, n.sims, data){
+# get sum, which is sufficient statistic
+x <- sum(data)
+# get n
+n <- nrow(data)
+# create empty matrix, allocate memory for efficiency
+res <- matrix(NA, nrow = n.sims, ncol = 2)
+res[1,] <- c(start.a,start.b)
+for (i in 2:n.sims){
+# sample the values
+res[i,1] <- rgamma(1, shape = n+1,
+rate = res[i-1,2]*x+1)
+res[i,2] <- rgamma(1, shape = n+1,
+rate = res[i,1]*x+1)
+}
+return(res) #this gives us a matrix of simulated drawings for a and b
+}
+```
+
+
+```{r}
+# run Gibbs sampler
+n.sims <- 1000
+a = 0.2
+b = 0.3 #these are our actual parameter values
+
+set.seed(455)
+dist <- rexp(n = n.sims, a*b)
+data <-data.frame(dist)
+
+data
+
+# return the result (res)
+res <- sampleGibbs(.25,.25, n.sims, data)
+res
+res.mat <- data.frame(res)
+
+#ggplot(res.mat,aes(x=X1,y=X2))+
+  #geom_point()+
+  #xlab("Alpha")+
+  #ylab("Beta")
+
+ggplot(res.mat, aes(x = X1*X2))+ #we know from our exponential distribution that lambda = ab, so we can find the distribution of lambda for parameter estimation
+  geom_histogram()+
+  ggtitle("Distribution of Lambda")
+```
+
 
 Let's take a look at a simple example with discrete random variables.
 # Gibbs Sampling and Markov chain Monte Carlo (MCMC)
