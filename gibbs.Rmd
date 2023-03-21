@@ -56,9 +56,11 @@ By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\th
 Consider an exponential model for observations $x = (x_1,...,x_n)$:
 
 $$p(x|a,b) = abe^{-abx} \quad \text{for} (x>0)$$
+
 and suppose the prior is:
 *ask kelsey about this*
 $$p(a,b) = e^{-a-b} \quad \text{for} (a,b>0)$$
+
 
 We want to sample from the posterior: $p(a,b|x)$. To start, we must look at likelihood.
 $$\begin{aligned} p(\vec{x}|a,b) &= \Pi_{i=1}^n p(x_i|a,b) \\ 
@@ -134,11 +136,8 @@ set.seed(455)
 dist <- rexp(n = n.sims, a*b)
 data <-data.frame(dist)
 
-data
-
 # return the result (res)
 res <- sampleGibbs(.25,.25, n.sims, data)
-res
 res.mat <- data.frame(res)
 
 #ggplot(res.mat,aes(x=X1,y=X2))+
