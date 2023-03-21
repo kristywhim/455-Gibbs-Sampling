@@ -80,9 +80,8 @@ $$B \sim \text{Gamma}(n+1,a_n\sum_{i=1}^nx_i +1)$$
 
 Then, we can apply our posterior distribution to Gibbs Sampling to find an estimate of the rate, $\lambda$, for our distribution.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(cache=TRUE)
+```{r}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 library(MASS)
 library(ggplot2)
 #######################################
