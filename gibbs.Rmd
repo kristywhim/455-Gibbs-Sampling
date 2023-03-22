@@ -68,7 +68,7 @@ $$\begin{aligned} p(\vec{x}|a,b) &= \Pi_{i=1}^n p(x_i|a,b) \\
 &= (ab)^n e^{-ab\sum_{i=1}^nx_i}
 \end{aligned}$$
 
-However, since the function is symmetric for a and b, we only need to solve for one. We can derive the posterior distributions, $A$ and $B$, respectively:
+However, since the function is symmetric for a and b, we only need to solve for one. We can derive the conditional probability distributions, $A$ and $B$, respectively:
 
 $$\begin{aligned} p(a|x,b) &\propto_a p(\vec{x}|a,b)p(a,b) \\ 
 &= (ab)^n e^{-ab\sum_{i=1}^nx_i} \times e^{-a-b} \\ 
@@ -125,6 +125,14 @@ return(res) #this gives us a matrix of simulated drawings for a and b
 }
 ```
 
+```{r, include=FALSE}
+#ggplot(res.mat,aes(x=X1,y=X2))+
+  #geom_point()+
+  #xlab("Alpha")+
+  #ylab("Beta")
+```
+
+
 
 ```{r}
 # run Gibbs sampler
@@ -139,11 +147,6 @@ data <-data.frame(dist)
 # return the result (res)
 res <- sampleGibbs(.25,.25, n.sims, data)
 res.mat <- data.frame(res)
-
-#ggplot(res.mat,aes(x=X1,y=X2))+
-  #geom_point()+
-  #xlab("Alpha")+
-  #ylab("Beta")
 
 ggplot(res.mat, aes(x = X1*X2))+ #we know from our exponential distribution that lambda = ab, so we can find the distribution of lambda for parameter estimation
   geom_histogram()+
