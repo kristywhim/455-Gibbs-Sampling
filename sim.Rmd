@@ -2,9 +2,6 @@
 title: "Applying Gibbs Sampling"
 description: |
   Gibbs Sampling can be used in population genetics research to build populations.
-output:
-  html_document:
-    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
