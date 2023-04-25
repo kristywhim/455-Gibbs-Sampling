@@ -10,19 +10,30 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
+## Background  
 
-# Concept {#gibbs}
+# Probability Refresher
+Gibbs sampling is used for multivariate distributions, or distributions that depend on more than one variable. Two types of multivariate distributions are joint and conditional.  
 
-Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is
-used for multidimensional models. Gibbs is used when sampling using
-joint distributions is too difficult, but it is easy to sample from
-conditional probabilities.
+1. Joint Probability Distribution - probability based on two independent variables (ex. p(x, y))  
 
-**Gibbs Sampling Definition** Suppose we want to obtain $n$ samples of
-$X = (x_1, x_2, x_3, ..., x_m)$ from a joint distribution $p(x,y)$.
+2. Conditional Probability Distribution - variables are dependent on each other (ex. p(x) given Y = y)  
 
-In Gibbs sampling, we will sample each $x^m$ conditional on others, that
-is, in iteration $(n+1)$:
+# Markov Chain Monte Carlo (MCMC)  
+Markov Chain Monte Carlo is used to estimate probabilities by simulating repetitions of an experiment. It is usually used in situations where an exact probability is difficult to calculate. [Larsen & Marx, 2018]
+
+**MCMC: Metropolis Hastings**  
+  Metropolis Hastings is a classic MCMC method used to obtain a sequence of random samples where the direct distribution is hard to find. In this method, a proposed distribution is utilized to sample new states. At each iteration, a new state is proposed. [Gunderson, 2020](https://gregorygundersen.com/blog/2020/02/23/gibbs-sampling/)  
+
+  Metropolis Hastings also utilizes an *acceptance rate*. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. [source: Jingyi Jessica Li](http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf)  
+
+## Concept {#gibbs}
+
+Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.
+
+**Gibbs Sampling Definition** Suppose we want to obtain $n$ samples of $X = (x_1, x_2, x_3, ..., x_m)$ from a joint distribution $p(x,y)$.
+
+In Gibbs sampling, we will sample each $x^m$ conditional on others, that is, in iteration $(n+1)$:
 
 $$
 \begin{aligned} 
@@ -31,59 +42,64 @@ x_{n+1}^{(2)}&\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)}) \\
 x_{n+1}^{(m)}&\sim P(x^{(m)}|x_{n+1}^{(1)},...,x_{n+1}^{(m-1)})
 \end{aligned}
 $$
+  
+**In Practice**   
+1. Set $(x_0,y_0)$ to some starting value.  
+2. Sample $x_1 \sim p(x|y_0)$. Alternatively, $X|Y = y_0$. This produces $(x_1, y_0)$.  
+3. Then, sample $y_1 \sim p(y|x_1)$ to arrive at the second point in the distribution $(x_1,y_1)$  
+4. Repeat steps 2 and 3, $M$ times.  
+  
+This produces a sequence of pairs of random variables, $(X_0,Y_0),(X_1,Y_1),(X_2,Y_2),...$, which satisfies the property of being a Markov chain. Note that the conditional distribution of $(X_i,Y_i)$, given all the previous pairs, only depends on $(X_{i-1},Y_{i-1})$ [Steorts](http://www2.stat.duke.edu/~rcs46/modern_bayes17/lecturesModernBayes17/lecture-7/07-gibbs.pdf)
+  
+**In a Bayesian Perspective**  
+Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter $\theta$. Let's call this distribution $\pi (\theta)$.
 
-Gibbs sampler is a special case of the Metropolis-Hasting algorithm with
-the conditional distribution (source: Jingyi Jessica Li)
+* Initial conditions
+  + Suppose $\theta$ may be partitioned into $\theta = (\theta_1,...,\theta_r)$
+  + It is then possible to simulate a random value of $\theta_i$ from a full conditional distribution $\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)$ for $i = 1, 2, ...$
 
-*In Practice* 1. Set $(x_0,y_0)$ to some starting value. 2. Sample
-$x_1 \sim p(x|y_0)$. Alternatively, $X|Y = y_0$. This produces
-$(x_1, y_0)$. 3. Then, sample $y_1 \sim p(y|x_1)$ to arrive at the
-second point in the distribution $(x_1,y_1)$ 4. Repeat steps 2 and 3, M
-times.
+* Use initial conditions to simulate the distribution $\pi (\theta)$
+* Start with initial values $\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})$
+* Then, use the following steps for $m = 1, 2, ...$:
+  + Step 1: Sample $\theta_1^{(m)}$ from $\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})$
+  
+  + Step 2: Sample $\theta_2^{(m)}$ from $\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})$
+  
+  + Step r: Sample $\theta_r^{(m)}$ from $\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})$
 
-This produces a sequence of pairs of random variables:
-$(X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...$ which satisfies the
-property of being a Markov chain.
+By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$, and thus is the distribution $\pi (\theta)$. [Pritchard et al., 2000](https://web.stanford.edu/group/pritchardlab/publications/pdfs/PritchardEtAl00.pdf)
 
-*Note that the conditional distribution of* $(X_i,Y_i)$, given all the
-previous pairs, only depends on $(X_{i-1},Y_{i-1})$ (Steorts)
 
-In a Bayesian perspective, Gibbs Sampling can be used to simulate a
-Markov chain distribution of unknown parameter $\theta$, $\pi (\theta)$.
+# Properties  
 
-For initial conditions, suppose $\theta$ may be partitioned into
-$\theta = (\theta_1,...,\theta_r)$. It is then possible to simulate a
-random value of $\theta_i$ from a full conditional distribution
-$\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)$
-for $i = 1, 2, ...$. Then, these initial conditions can be used to
-simulate the distribution $\pi (\theta)$. Start with initial values
-$\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})$. Then, use the
-following steps for $m = 1, 2, ...$:
+**Mixing Rate:** refers to how quickly the sample averages converge  
 
-*Bayesian Notes* Step 1: Sample $\theta_1^{(m)}$ from
-$\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})$
+* Indicates converging to a reasonable probability distribution  
 
-Step 2: Sample $\theta_2^{(m)}$ from
-$\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})$
+* A faster mixing rate means that the algorithm “mixes well”   
+  
+  
+**Burn-In:** property of Metropolis Hastings MCMC  
 
-Step r: Sample $\theta_r^{(m)}$ from
-$\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})$
+* It takes a few trials to converge to a reasonable probability distribution  
 
-By the Monte Carlo rules, it is easy to show that if
-$\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$,
-and thus is the distribution $\pi (\theta)$. (Pritchard, 2000.)
+* Must discard the first "B" samples that do not represent the data well  
 
-# Properties
+* First "B" samples are referred to as the burn-in period  
 
--   mixing rate
+* A good model will have a small burn in period   
 
--   burn in
+  
 
 # Limitations
+Some potential limitations and situations where Gibbs sampling can’t be used would be in situations where there are areas of extremely high probability or of extremely low probability. By the nature of conditional probability distributions, if the current point lands in a high probability region, the next point won't move. This is because it is solely dependent on the previous point, and the entire sample space will be limited to this very high probability peak. 
+  
+On the other hand, in a low probability region, you won’t be able to find any higher probability regions either. This is because sampling fails when it comes across a region where probability = 0. If the probability of any data being at a certain value in a dimension is zero, then you won't be able to sample a new point in that dimension because the entire sample space will also have a probability of zero.
 
-# A simulation example: Exponential and gamma model
 
-## Set up
+## A simulation example: Exponential and gamma model
+
+# Set up
 
 Consider an exponential model for our random observation
 $X_1,...,X_n \stackrel{iid}{\sim} \text{Exponential}(ab)$ (where the
@@ -215,7 +231,6 @@ $$
 
 ```{r}
 set.seed(1)
-
 # set up priors (mean)
 a0 <- mean(rgamma(1000, shape = 1, rate = 1))
 b0 <- mean(rgamma(1000, shape = 1, rate = 1))
@@ -227,12 +242,15 @@ X <- rexp(n = N, a0*b0) #create 100 observations where X~exp(ab)
 Xsum = sum(X) # for later use
 ```
 
+Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.
+
 ```{r}
 # store posterior samples of a and b
 alphas <- c()
 betas <- c()
 
 # input a0, b0
+# we are choosing the starting points to be the mean of our prior distribution
 alphas[1] <- a0
 betas[1] <- b0
 
@@ -243,6 +261,8 @@ j <- 1000
 Note that we now choose $(a_0, b_0)$ as our initial sample $(a_0, b_0)$,
 100 iid observations of $X_i$s, and 1000 times of iterations to run our
 Gibbs Sampling ($j$).
+
+Since we already know that $(a_0, b_0)$ are the "correct" values for $(a,b)$, we can predict that our Gibbs sampling will fluctuate around these values.
 
 ## Run!
 
@@ -274,7 +294,9 @@ hist(betas, xlab = expression(beta), main = '')
 iterations <- 1:j
 par(mfrow=c(1,2))
 plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
+abline(h = a0, col = "red")
 plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
+abline(h = b0, col = "blue")
 ```
 
 ------------------------------------------------------------------------
