@@ -1,7 +1,7 @@
 ---
 title: "Bayesian statistical world"
 description: |
-  Some additional details about the website
+  Bayesian is the setting for Gibb's sampler
 
 ---
 
@@ -11,4 +11,44 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Background: Bayesian V.S. Frequentist {#about}
 
+Frequentist is the dominant philosophy in the modern statistical world. In fact, many concepts/ thinkings/ logics we have been exposed from statistics are from Frequentist beliefs, such as "confidence interval", "p-value", "the true value of an unknown parameter", etc. Gibb's sampler is a method that applies conditional probability distribution, where the "conditioned" nature indicates its Bayesian flavor.
+
+Figure below illustrates Bayesian knowledge-building process: [Johnson, A. et.al.](https://www.bayesrulesbook.com/chapter-1.html)
+
+![An simplification of Bayesians thinking process](img/restaurant.png)
+
+
+
+Unlike Frequentists who deem unknown parameters are unknown, fixed constants, Bayesians think about them as **random variables** and constantly changing their beliefs about unknown parameters based on the data we truly see - they start by proposing a possible probability distribution for the unknown parameter (**prior distribution**), and find out what they actually see from real data to update/ change the beliefs by deriving **posterior distribution**. This explains why our setting is on Bayesian side - Gibbs sampler involves with conditional distributions.
+
+
 # Bayes Rule
+
+Connecting back to probability terms, let's remind ourselves the Bayes rule of two events $A$ and $B$, generalized by equation below:
+
+$$
+P(A| B )= \frac{P(A\cap B)} {P(B)}=\frac{P(B|A)P(A)}{P(B)} 
+$$
+
+where:
+
+-   $P(A)$ and $P(B)$ are the independent probabilities that they happen
+-   $P(A\cap B)$ is the probability that both A and B happen
+-   $P(B|A)$ is the conditional probability given A happens
+
+By knowing the independent probabilities of $A$ and $B$, and seeing the probability of $B$ happens given A happens, we can derive what do we know about $A$ given B.
+
+In Bayes, $A$ will reflect our known parameters, and $B$ will reflect our data. Let's take a further step to see how this connect to probability distribution as a whole.
+ 
+# Use Bayes rule in probability distribution
+
+Suppose we are interested in the unknown parameter $\theta$.
+
+We start by proposing a **prior** distribution to it: denoted as $p(\theta)$.
+
+Next, we will incorporate our data by calculating the *likelihood* of seeing a sequence of observations $\vec{X}$ under $\theta$: denoted as $p(\vec{X}|\theta)$.
+
+We are inters
+
+## Exercise: deriving posterior distribution for $\theta$
+
