@@ -2,29 +2,37 @@
 title: "Applying Gibbs Sampling"
 description: |
   Gibbs Sampling can be used in population genetics research to build populations.
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Gibbs Sampling in statistical genetics {#sim}
 
 Often times in population genetics research, it is useful to classify individuals in a sample into populations. While other areas of study may use factors like linguistic, cultural, or physical characters, it is not always easy to assign populations based on genotypes.  
 
 Pritchard et al. 2000 proposed a method to assign individuals to populations and simultaneously estimate allele frequencies: homozygous dominant, heterozygous, and homozygous recessive. This method can utilize various genetic markerss as indication of alleles including SNPS, RFLPS, microsatellites, etc. Additionally, they follow a few assumptions:  
-* Assumes markers are unlinked loci → can be drawn as independent samples
-* Assumes Hardy Weinberg Equilibrium  
 
++ Assumes markers are unlinked loci → can be drawn as independent samples  
+  
++ Assumes Hardy Weinberg Equilibrium  
+  
 **Hardy Weinberg Equilibrium**
 $$p^2+2pq+q^2 = 1$$
-Where $p^2$ is the homozygous dominant allele frequency, $2pq$ is the heterozygous allele frequency, and $q^2$ is the homozygous recessive allele frequency.
+Where $p^2$ is the homozygous dominant allele frequency, $2pq$ is the heterozygous allele frequency, and $q^2$ is the homozygous recessive allele frequency. By assuming Hardy Weinberg Equilibrium, we are stating that the genetic variation in a population will remain constant from one generation to the next.
 
 Under these assumptions, each allele at each locus in each genotype is an independent draw from the appropriate frequency distribution.
 
-#Building a Model
+# Building a Model
 Assume each population is modeled by a characteristic set of allele frequencies.
 
-Let X be the genotypes of sampled individuals (our data)  
-Let Z be the unknown population of origin of individuals  
-Let P be the unknown allele frequency in all populations  
+  * Let X be the genotypes of sampled individuals (our data)  
+  * Let Z be the unknown population of origin of individuals  
+  * Let P be the unknown allele frequency in all populations  
 
 Information about P and Z is given by the posterior distribution:
 
@@ -37,11 +45,9 @@ This is a great opportunity to use Gibbs Sampling! It is not possible to sample 
 Start with randomly drawn initial value $Z_0$ as a hypothetical population of origin and $P_0$ as a hypothetical allele frequency. Then, iterate the following steps:
 
 1. Sample $P_1$ from $P(P | X, Z_0)$
-  * This estimates allele frequencies for each population assuming population of origin for the individual is known.
+    + This estimates allele frequencies for each population assuming population of origin for the individual is known.
 2. Sample $Z_1$ from $P(Z | X, P_1)$
-  * This estimates the population of origin for each individual assuming that the population allele frequencies are known.
-3. Continue the pattern n times:
-  * Sample $P_n$ from $P(P | X, Z_{n-1})$
-  * Sample $Z_n$ from $P(Z | X, P_n)$
-
-# Computation: A small simulation
+    + This estimates the population of origin for each individual assuming that the population allele frequencies are known.
+3. Continue the pattern $n$ times:
+    + Sample $P_n$ from $P(P | X, Z_{n-1})$
+    + Sample $Z_n$ from $P(Z | X, P_n)$
