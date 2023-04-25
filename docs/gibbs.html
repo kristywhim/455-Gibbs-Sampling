@@ -110,7 +110,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["Gibbs Sampling"]},{"type":"character","attributes":{},"value":["Some additional details about the website"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Gibbs Sampling"]},{"type":"character","attributes":{},"value":["Some additional details about the website\n"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["markdown"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["wrap"]}},"value":[{"type":"integer","attributes":{},"value":[72]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2074,7 +2074,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2103,6 +2103,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Mathematical Statistic: Gibbs Sampling</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2128,105 +2129,241 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 <div class="d-article">
 <h1 id="gibbs">Concept</h1>
-<p>Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.</p>
-<p><strong>Gibbs Sampling Definition</strong>
-Suppose we want to obtain <span class="math inline">\(n\)</span> samples of <span class="math inline">\(X = (x_1, x_2, x_3, ..., x_m)\)</span> from a joint distribution <span class="math inline">\(p(x,y)\)</span>.</p>
-<p>In Gibbs sampling, we will sample each <span class="math inline">\(x^m\)</span> conditional on others, that is, in iteration <span class="math inline">\((n+1)\)</span>:</p>
-$$
-<span class="math display">\[\begin{aligned} x_{n+1}^{(1)}&amp;\sim P(x^{(1)}|x_n^{(2)},x_n^{(3)},...,x_n^{(m)}) \\
-
-x_{n+1}^{(2)}&amp;\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)})  \\
-
-
+<p>Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is
+used for multidimensional models. Gibbs is used when sampling using
+joint distributions is too difficult, but it is easy to sample from
+conditional probabilities.</p>
+<p><strong>Gibbs Sampling Definition</strong> Suppose we want to obtain <span class="math inline">\(n\)</span> samples of
+<span class="math inline">\(X = (x_1, x_2, x_3, ..., x_m)\)</span> from a joint distribution <span class="math inline">\(p(x,y)\)</span>.</p>
+<p>In Gibbs sampling, we will sample each <span class="math inline">\(x^m\)</span> conditional on others, that
+is, in iteration <span class="math inline">\((n+1)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+x_{n+1}^{(1)}&amp;\sim P(x^{(1)}|x_n^{(2)},x_n^{(3)},...,x_n^{(m)}) \\
+x_{n+1}^{(2)}&amp;\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)}) \\
 x_{n+1}^{(m)}&amp;\sim P(x^{(m)}|x_{n+1}^{(1)},...,x_{n+1}^{(m-1)})
-
-\end{aligned}\]</span>
-<p>$$</p>
-<p>Gibbs sampler is a special case of the Metropolis-Hasting algorithm with the conditional distribution (source: Jingyi Jessica Li)</p>
-<p><em>In Practice</em>
-1. Set <span class="math inline">\((x_0,y_0)\)</span> to some starting value.
-2. Sample <span class="math inline">\(x_1 \sim p(x|y_0)\)</span>. Alternatively, <span class="math inline">\(X|Y = y_0\)</span>. This produces <span class="math inline">\((x_1, y_0)\)</span>.
-3. Then, sample <span class="math inline">\(y_1 \sim p(y|x_1)\)</span> to arrive at the second point in the distribution <span class="math inline">\((x_1,y_1)\)</span>
-4. Repeat steps 2 and 3, M times.</p>
-<p>This produces a sequence of pairs of random variables: <span class="math inline">\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...\)</span> which satisfies the property of being a Markov chain.</p>
-<p><em>Note that the conditional distribution of <span class="math inline">\((X_i,Y_i)\)</span>, given all the previous pairs, only depends on <span class="math inline">\((X_{i-1},Y_{i-1})\)</span> (Steorts)</em></p>
-<p>In a Bayesian perspective, Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\pi (\theta)\)</span>.</p>
-<p>For initial conditions, suppose <span class="math inline">\(\theta\)</span> may be partitioned into <span class="math inline">\(\theta = (\theta_1,...,\theta_r)\)</span>. It is then possible to simulate a random value of <span class="math inline">\(\theta_i\)</span> from a full conditional distribution <span class="math inline">\(\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)\)</span> for <span class="math inline">\(i = 1, 2, ...\)</span>. Then, these initial conditions can be used to simulate the distribution <span class="math inline">\(\pi (\theta)\)</span>. Start with initial values <span class="math inline">\(\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})\)</span>. Then, use the following steps for <span class="math inline">\(m = 1, 2, ...\)</span>:</p>
-<p><em>Bayesian Notes</em>
-Step 1: Sample <span class="math inline">\(\theta_1^{(m)}\)</span> from <span class="math inline">\(\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})\)</span></p>
-<p>Step 2: Sample <span class="math inline">\(\theta_2^{(m)}\)</span> from <span class="math inline">\(\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})\)</span></p>
-<p>Step r: Sample <span class="math inline">\(\theta_r^{(m)}\)</span> from <span class="math inline">\(\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})\)</span></p>
-<p>By the Monte Carlo rules, it is easy to show that if <span class="math inline">\(\theta^{(m-1)}\sim \pi(\theta)\)</span>, then <span class="math inline">\(\theta^{(m)}\sim \pi(\theta)\)</span>, and thus is the distribution <span class="math inline">\(\pi (\theta)\)</span>. (Pritchard, 2000.)</p>
-<h1 id="an-example">An example</h1>
-<p>Consider an exponential model for observations <span class="math inline">\(x = (x_1,...,x_n)\)</span>:</p>
-<p><span class="math display">\[p(x|a,b) = abe^{-abx} \quad \text{for} (x&gt;0)\]</span></p>
-<p>and suppose the prior is:
-<em>ask kelsey about this</em>
-<span class="math display">\[p(a,b) = e^{-a-b} \quad \text{for} (a,b&gt;0)\]</span></p>
-<p>We want to sample from the posterior: <span class="math inline">\(p(a,b|x)\)</span>. To start, we must look at likelihood.
-<span class="math display">\[\begin{aligned} p(\vec{x}|a,b) &amp;= \Pi_{i=1}^n p(x_i|a,b) \\
-&amp;= \Pi_{i=1}^n abe^{-abx_i} \\
-&amp;= (ab)^n e^{-ab\sum_{i=1}^nx_i}
-\end{aligned}\]</span></p>
-<p>However, since the function is symmetric for a and b, we only need to solve for one. We can derive the conditional probability distributions, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, respectively:</p>
-<p><span class="math display">\[\begin{aligned} p(a|x,b) &amp;\propto_a p(\vec{x}|a,b)p(a,b) \\
-&amp;= (ab)^n e^{-ab\sum_{i=1}^nx_i} \times e^{-a-b} \\
-&amp;= (ab)^n e^{-a-b-ab\sum_{i=1}^nx_i} \\
-&amp;\propto_a a^ne^{-a(b\sum_{i=1}^nx_i)}
-\end{aligned}\]</span></p>
-<p>Thus, the posterior distributions:
-<span class="math display">\[A \sim \text{Gamma}(n+1,b_n\sum_{i=1}^nx_i +1)\]</span>
-<span class="math display">\[B \sim \text{Gamma}(n+1,a_n\sum_{i=1}^nx_i +1)\]</span></p>
-<p>Then, we can apply our posterior distribution to Gibbs Sampling to find an estimate of the rate, <span class="math inline">\(\lambda\)</span>, for our distribution.</p>
-<div class="layout-chunk" data-layout="l-body">
-
-</div>
-<p>We are working with an exponential model that is dependent on variables a and b. Lambda = ab
-We will write out the actual equation later.</p>
+\end{aligned}
+\]</span></p>
+<p>Gibbs sampler is a special case of the Metropolis-Hasting algorithm with
+the conditional distribution (source: Jingyi Jessica Li)</p>
+<p><em>In Practice</em> 1. Set <span class="math inline">\((x_0,y_0)\)</span> to some starting value. 2. Sample
+<span class="math inline">\(x_1 \sim p(x|y_0)\)</span>. Alternatively, <span class="math inline">\(X|Y = y_0\)</span>. This produces
+<span class="math inline">\((x_1, y_0)\)</span>. 3. Then, sample <span class="math inline">\(y_1 \sim p(y|x_1)\)</span> to arrive at the
+second point in the distribution <span class="math inline">\((x_1,y_1)\)</span> 4. Repeat steps 2 and 3, M
+times.</p>
+<p>This produces a sequence of pairs of random variables:
+<span class="math inline">\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...\)</span> which satisfies the
+property of being a Markov chain.</p>
+<p><em>Note that the conditional distribution of</em> <span class="math inline">\((X_i,Y_i)\)</span>, given all the
+previous pairs, only depends on <span class="math inline">\((X_{i-1},Y_{i-1})\)</span> (Steorts)</p>
+<p>In a Bayesian perspective, Gibbs Sampling can be used to simulate a
+Markov chain distribution of unknown parameter <span class="math inline">\(\theta\)</span>, <span class="math inline">\(\pi (\theta)\)</span>.</p>
+<p>For initial conditions, suppose <span class="math inline">\(\theta\)</span> may be partitioned into
+<span class="math inline">\(\theta = (\theta_1,...,\theta_r)\)</span>. It is then possible to simulate a
+random value of <span class="math inline">\(\theta_i\)</span> from a full conditional distribution
+<span class="math inline">\(\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)\)</span>
+for <span class="math inline">\(i = 1, 2, ...\)</span>. Then, these initial conditions can be used to
+simulate the distribution <span class="math inline">\(\pi (\theta)\)</span>. Start with initial values
+<span class="math inline">\(\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})\)</span>. Then, use the
+following steps for <span class="math inline">\(m = 1, 2, ...\)</span>:</p>
+<p><em>Bayesian Notes</em> Step 1: Sample <span class="math inline">\(\theta_1^{(m)}\)</span> from
+<span class="math inline">\(\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})\)</span></p>
+<p>Step 2: Sample <span class="math inline">\(\theta_2^{(m)}\)</span> from
+<span class="math inline">\(\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})\)</span></p>
+<p>Step r: Sample <span class="math inline">\(\theta_r^{(m)}\)</span> from
+<span class="math inline">\(\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})\)</span></p>
+<p>By the Monte Carlo rules, it is easy to show that if
+<span class="math inline">\(\theta^{(m-1)}\sim \pi(\theta)\)</span>, then <span class="math inline">\(\theta^{(m)}\sim \pi(\theta)\)</span>,
+and thus is the distribution <span class="math inline">\(\pi (\theta)\)</span>. (Pritchard, 2000.)</p>
+<h1 id="properties">Properties</h1>
+<ul>
+<li><p>mixing rate</p></li>
+<li><p>burn in</p></li>
+</ul>
+<h1 id="limitations">Limitations</h1>
+<h1 id="a-simulation-example-exponential-and-gamma-model">A simulation example: Exponential and gamma model</h1>
+<h2 id="set-up">Set up</h2>
+<p>Consider an exponential model for our random observation
+<span class="math inline">\(X_1,...,X_n \stackrel{iid}{\sim} \text{Exponential}(ab)\)</span> (where the
+parameter <span class="math inline">\(\lambda\)</span> is the product of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>):</p>
+<p><span class="math display">\[p(X_i|a,b) = abe^{-abx} \quad \text{for} (x&gt;0)\]</span> <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> is our
+unknown parameters. Now, suppose we put the following <em>independent</em>
+priors on <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>: <span class="math display">\[a{\sim} \text{Gamma}(1,1)\]</span>
+<span class="math display">\[b{\sim} \text{Gamma}(1,1)\]</span></p>
+<p><em>Recall from probability</em>: If random variable A has Gamma(1,1)
+distribution, it has the pdf: <span class="math inline">\(f_A(a) = e^{-a}\)</span>.</p>
+<p>Therefore, since <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are independent priors, we can calculate
+joint distribution of our prior by simply multiplying their pdfs
+together:</p>
+<p><span class="math display">\[p(a,b) = e^{-a-b} \quad \text{for} (a,b&gt;0)\]</span></p>
+<h2 id="why-is-conditional-distribution-easier-than-joint">Why is conditional distribution easier than joint?</h2>
+<p>Remember: our unknown parameters/ interests are <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>.</p>
+<p>To start with, given the above, we really want to know what the joint
+posterior distribution of <span class="math inline">\(p(a,b|X)\)</span> looks like. Unfortunately, however,
+we can’t. In fact, Kristy and Regan are going to claim that, instead of
+directly sampling from the <em>joint</em> posterior distribution
+<span class="math inline">\(p(a,b|\vec{X})\)</span>, it is easier to sample from conditional distributions:
+<span class="math inline">\(p(a|\vec{X},b)\)</span> and <span class="math inline">\(p(b|\vec{X},a)\)</span>. (vector <span class="math inline">\(X\)</span> just means we are
+interested at a random sample - a bunch of <span class="math inline">\(X_i\)</span>s.)</p>
+<p>Why? Let’s write out their formulas:</p>
+<p>Joint (hard!):</p>
+<p><span class="math display">\[
+p(a,b|\vec{X})=\frac{p(a,b,\vec{X})}{p(\vec{X})}
+\]</span></p>
+<p>Conditional (easy!):</p>
+<p><span class="math display">\[
+p(a|b,\vec{X}) = \frac{p(a,b,\vec{X})}{p(b,\vec{X})}
+\]</span></p>
+<p>Note that they’re both proportional to the whole, joint distribution
+<span class="math inline">\(p(a,b,\vec{X})\)</span>. Let’s calculate this: <span class="math display">\[
+\begin{aligned}
+p(a,b,\vec{X})&amp;= p(\vec{X}|a,b)*p(a,b)\\
+&amp;=\Pi_{i=1}^n p(X_i|a,b) * e^{-a-b}  \\
+&amp;= \Pi_{i=1}^n abe^{-abx_i} * e^{-a-b} \\
+&amp;= (ab)^n e^{-ab\sum_{i=1}^nx_i}* e^{-a}*e^{-b} \\
+&amp;= (ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}
+\end{aligned}
+\]</span> Let’s start with the conditional distribution <span class="math inline">\(p(a|b,\vec{X})\)</span> that
+works:</p>
+<p><span class="math display">\[
+\begin{aligned}
+p(a|b,\vec{X}) &amp;\propto p(a,b,\vec{X})\\
+&amp;=(ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}\\
+&amp;\propto a^ne^{-a(b\sum_{i=1}^nx_i+1)} \quad \quad\text{dump b-related terms}\\
+\end{aligned}
+\]</span></p>
+<p>This is a Gamma distribution!</p>
+<p><span class="math display">\[
+a|b,\vec{X}\sim \text{Gamma}(n+1,b\sum_{i=1}^nx_i +1)
+\]</span></p>
+<p>Symmetrically, the conditional distribution of <span class="math inline">\(b\)</span> is the same: <span class="math display">\[
+b|a,\vec{X} \sim \text{Gamma}(n+1,a\sum_{i=1}^nx_i +1)
+\]</span></p>
+<p><strong>What about our joint, posterior distribution</strong> <span class="math inline">\(p(a,b|\vec{X})\)</span>? <span class="math display">\[
+\begin{aligned}
+p(a,b|\vec{X}) &amp;\propto p(a,b,\vec{X})\\
+&amp;=(ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}\\
+\end{aligned}
+\]</span> We can’t dump any terms, and this does not look familiar.</p>
+<h2 id="getting-to-gibbs">Getting to Gibbs</h2>
+<p>Relating back to Gibbs sampling, since we have two dimensions <span class="math inline">\(a\)</span> and
+b$, our Gibbs samples are: <span class="math inline">\((a_0, b_0)\)</span>, <span class="math inline">\((a_1, b_1)\)</span>, <span class="math inline">\((a_2, b_2)\)</span>,
+…… <span class="math inline">\((a_n, b_n)\)</span>, where the <span class="math inline">\(n^{th}\)</span> sample <span class="math inline">\((a_n, b_n)\)</span>, will always
+depend on the previous one <span class="math inline">\((a_{n-1}, b_{n-1})\)</span>, forming a Markov Chain.</p>
+<p>We draw samples as: 1. Choose the initial sample <span class="math inline">\((a_0, b_0)\)</span> 2. Draw
+<span class="math inline">\(a_1\sim p(a|b_0,\vec{X})\)</span>, <span class="math inline">\(b_1\sim p(b|a_1,\vec{X})\)</span> - this is
+<span class="math inline">\((a_1, b_1)\)</span> 3. Draw <span class="math inline">\(a_2\sim p(a|b_1,\vec{X})\)</span>,
+<span class="math inline">\(b_2\sim p(b|a_2,\vec{X})\)</span></p>
+<p>This means, after seeing some data <span class="math inline">\(\vec{X}\)</span>, where we said
+<span class="math inline">\(X_i\sim \text{Exponential}(ab)\)</span>, we will continuously draw posterior
+samples, from two dimensions <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, based on the following
+distribution (<span class="math inline">\(N=\)</span> number of random observation of <span class="math inline">\(X\)</span>, <span class="math inline">\(j=\)</span> times of
+iteration):</p>
+<p><span class="math display">\[
+a_{j+1}|b_{j},\vec{X}\sim \text{Gamma}(N+1,b_j\sum_{i=1}^nx_i
++1)
+\]</span></p>
+<p><span class="math display">\[
+b_{j+1}|a_{j+1},\vec{X}
+\sim \text{Gamma}(N+1,a_{j+1}\sum_{i=1}^nx_i +1)
+\]</span></p>
+<hr />
+<h1 id="continued-r-gibbs-sampler">(continued) R: Gibbs Sampler</h1>
+<p>The following content is adapted from Dr. Grinde’s in class activity on
+Gibb’s sampling. Here are the conditional distributions if needed:</p>
+<p><span class="math display">\[
+a_{j+1}|b_{j},\vec{X}\sim \text{Gamma}(N+1,b_j\sum_{i=1}^Nx_i
++1)
+\]</span></p>
+<p><span class="math display">\[
+b_{j+1}|a_{j+1},\vec{X}
+\sim \text{Gamma}(N+1,a_{j+1}\sum_{i=1}^Nx_i +1)
+\]</span></p>
+<h2 id="set-up-1">Set up</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>sampleGibbs</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>start.a</span>, <span class='va'>start.b</span>, <span class='va'>n.sims</span>, <span class='va'>data</span><span class='op'>)</span><span class='op'>{</span></span>
-<span><span class='co'># get sum, which is sufficient statistic</span></span>
-<span><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></span>
-<span><span class='co'># get n</span></span>
-<span><span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></span>
-<span><span class='co'># create empty matrix, allocate memory for efficiency</span></span>
-<span><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='cn'>NA</span>, nrow <span class='op'>=</span> <span class='va'>n.sims</span>, ncol <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
-<span><span class='va'>res</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>start.a</span>,<span class='va'>start.b</span><span class='op'>)</span></span>
-<span><span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>2</span><span class='op'>:</span><span class='va'>n.sims</span><span class='op'>)</span><span class='op'>{</span></span>
-<span><span class='co'># sample the values</span></span>
-<span><span class='va'>res</span><span class='op'>[</span><span class='va'>i</span>,<span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1</span>, shape <span class='op'>=</span> <span class='va'>n</span><span class='op'>+</span><span class='fl'>1</span>,</span>
-<span>rate <span class='op'>=</span> <span class='va'>res</span><span class='op'>[</span><span class='va'>i</span><span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>]</span><span class='op'>*</span><span class='va'>x</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span></span>
-<span><span class='va'>res</span><span class='op'>[</span><span class='va'>i</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1</span>, shape <span class='op'>=</span> <span class='va'>n</span><span class='op'>+</span><span class='fl'>1</span>,</span>
-<span>rate <span class='op'>=</span> <span class='va'>res</span><span class='op'>[</span><span class='va'>i</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='va'>x</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>)</span></span>
-<span><span class='op'>}</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span> <span class='co'>#this gives us a matrix of simulated drawings for a and b</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># set up priors (mean)</span></span>
+<span><span class='va'>a0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>b0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># true data distribution</span></span>
+<span><span class='va'>N</span> <span class='op'>&lt;-</span> <span class='fl'>100</span>  <span class='co'># 100 Xi observations</span></span>
+<span><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>N</span>, <span class='va'>a0</span><span class='op'>*</span><span class='va'>b0</span><span class='op'>)</span> <span class='co'>#create 100 observations where X~exp(ab)</span></span>
+<span></span>
+<span><span class='va'>Xsum</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span> <span class='co'># for later use</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># store posterior samples of a and b</span></span>
+<span><span class='va'>alphas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='va'>betas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># input a0, b0</span></span>
+<span><span class='va'>alphas</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>a0</span></span>
+<span><span class='va'>betas</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>b0</span></span>
+<span></span>
+<span><span class='co'># choose how many iterations of Gibbs sampling to run</span></span>
+<span><span class='va'>j</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span></span></code></pre>
+</div>
+</div>
+<p>Note that we now choose <span class="math inline">\((a_0, b_0)\)</span> as our initial sample <span class="math inline">\((a_0, b_0)\)</span>,
+100 iid observations of <span class="math inline">\(X_i\)</span>s, and 1000 times of iterations to run our
+Gibbs Sampling (<span class="math inline">\(j\)</span>).</p>
+<h2 id="run">Run!</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># run for j (1000) iterations</span></span>
+<span></span>
+<span><span class='kw'>for</span><span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>2</span><span class='op'>:</span><span class='va'>j</span><span class='op'>)</span><span class='op'>{</span></span>
+<span><span class='co'># update a and b</span></span>
+<span><span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1</span>, shape <span class='op'>=</span> <span class='va'>N</span><span class='op'>+</span><span class='fl'>1</span>, rate <span class='op'>=</span> <span class='va'>betas</span><span class='op'>[</span><span class='va'>i</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>*</span><span class='va'>Xsum</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span><span class='va'>alphas</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>a</span></span>
+<span></span>
+<span><span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1</span>, shape <span class='op'>=</span> <span class='va'>N</span><span class='op'>+</span><span class='fl'>1</span>, rate <span class='op'>=</span> <span class='va'>alphas</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>*</span><span class='va'>Xsum</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span><span class='va'>betas</span><span class='op'>[</span><span class='va'>i</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>b</span></span>
 <span><span class='op'>}</span></span></code></pre>
 </div>
 </div>
+<h2 id="visualizations">Visualizations</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># run Gibbs sampler</span></span>
-<span><span class='va'>n.sims</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span></span>
-<span><span class='va'>a</span> <span class='op'>=</span> <span class='fl'>0.2</span></span>
-<span><span class='va'>b</span> <span class='op'>=</span> <span class='fl'>0.3</span> <span class='co'>#these are our actual parameter values</span></span>
-<span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>455</span><span class='op'>)</span></span>
-<span><span class='va'>dist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>n.sims</span>, <span class='va'>a</span><span class='op'>*</span><span class='va'>b</span><span class='op'>)</span></span>
-<span><span class='va'>data</span> <span class='op'>&lt;-</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>dist</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='co'># return the result (res)</span></span>
-<span><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>sampleGibbs</span><span class='op'>(</span><span class='fl'>.25</span>,<span class='fl'>.25</span>, <span class='va'>n.sims</span>, <span class='va'>data</span><span class='op'>)</span></span>
-<span><span class='va'>res.mat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
-<span></span>
-<span><span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>res.mat</span>, <span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>X1</span><span class='op'>*</span><span class='va'>X2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>+</span> <span class='co'>#we know from our exponential distribution that lambda = ab, so we can find the distribution of lambda for parameter estimation</span></span>
-<span>  <span class='fu'>geom_histogram</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span></span>
-<span>  <span class='fu'>ggtitle</span><span class='op'>(</span><span class='st'>"Distribution of Lambda"</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Histogram of samples</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>alphas</span>, xlab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>alpha</span><span class='op'>)</span>, main <span class='op'>=</span> <span class='st'>''</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>betas</span>, xlab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>beta</span><span class='op'>)</span>, main <span class='op'>=</span> <span class='st'>''</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="gibbs_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
-<p>Let’s take a look at a simple example with discrete random variables.
-# Gibbs Sampling and Markov chain Monte Carlo (MCMC)</p>
+<p><em>Trace Plot: the behavior of the samples over j iterations:</em></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>iterations</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>j</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>alphas</span> <span class='op'>~</span> <span class='va'>iterations</span>, xlab <span class='op'>=</span> <span class='st'>'Iteration'</span>, ylab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>alpha</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>'l'</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>betas</span> <span class='op'>~</span> <span class='va'>iterations</span>, xlab <span class='op'>=</span> <span class='st'>'Iteration'</span>, ylab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>beta</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>'l'</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="gibbs_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
+</div>
+<hr />
+<h2 id="analyzing-algorithm-performance">Analyzing algorithm performance</h2>
+<p>From the trace plot above, it seems like <span class="math inline">\(b\)</span> reaches a slightly lower
+range of fluctuation. What factors do you think that are involved in
+shaping the trace plots?</p>
+<p><em>ANSWERS</em>: Many factors. Observed data (“Xsum”), (the way of choosing)
+the starting values of both parameters, sample size (“N”), number of
+iterations (“<span class="math inline">\(j\)</span>”) - if we run for enough long time, the samples will
+converge and starting value does not matter that much. If we choose
+wisely on starting value, it may takes us less time to see that the
+values <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> converge (greater mixing rate: evidence of a good
+MCMC algorithm performance) and their trace plots become stable.</p>
+<p>Noting that fluctuations are not necessarily bad. Mixing rate, which is
+how fast that sample averages converage, determines MCMC performance.
+Our trace plots could be improved by changing the initial starting
+values, <span class="math inline">\(a_0, b_0\)</span>, and factors mentioned above all come in to play in
+determining the convergence shape of the trace plots.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

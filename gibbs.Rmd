@@ -2,157 +2,299 @@
 title: "Gibbs Sampling"
 description: |
   Some additional details about the website
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 ```
 
 # Concept {#gibbs}
 
-Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.
+Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is
+used for multidimensional models. Gibbs is used when sampling using
+joint distributions is too difficult, but it is easy to sample from
+conditional probabilities.
 
-**Gibbs Sampling Definition**
-Suppose we want to obtain $n$ samples of $X = (x_1, x_2, x_3, ..., x_m)$ from a joint distribution $p(x,y)$. 
+**Gibbs Sampling Definition** Suppose we want to obtain $n$ samples of
+$X = (x_1, x_2, x_3, ..., x_m)$ from a joint distribution $p(x,y)$.
 
-In Gibbs sampling, we will sample each $x^m$ conditional on others, that is, in iteration $(n+1)$:
+In Gibbs sampling, we will sample each $x^m$ conditional on others, that
+is, in iteration $(n+1)$:
 
-$$\begin{aligned} x_{n+1}^{(1)}&\sim P(x^{(1)}|x_n^{(2)},x_n^{(3)},...,x_n^{(m)}) \\ 
-
-x_{n+1}^{(2)}&\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)})  \\
-
-
+$$
+\begin{aligned} 
+x_{n+1}^{(1)}&\sim P(x^{(1)}|x_n^{(2)},x_n^{(3)},...,x_n^{(m)}) \\
+x_{n+1}^{(2)}&\sim P(x^{(2)}|x_{n+1}^{(1)},x_n^{(3)},...,x_n^{(m)}) \\
 x_{n+1}^{(m)}&\sim P(x^{(m)}|x_{n+1}^{(1)},...,x_{n+1}^{(m-1)})
+\end{aligned}
+$$
 
-\end{aligned}$$
+Gibbs sampler is a special case of the Metropolis-Hasting algorithm with
+the conditional distribution (source: Jingyi Jessica Li)
 
-Gibbs sampler is a special case of the Metropolis-Hasting algorithm with the conditional distribution (source: Jingyi Jessica Li)
+*In Practice* 1. Set $(x_0,y_0)$ to some starting value. 2. Sample
+$x_1 \sim p(x|y_0)$. Alternatively, $X|Y = y_0$. This produces
+$(x_1, y_0)$. 3. Then, sample $y_1 \sim p(y|x_1)$ to arrive at the
+second point in the distribution $(x_1,y_1)$ 4. Repeat steps 2 and 3, M
+times.
 
-*In Practice*
-1. Set $(x_0,y_0)$ to some starting value.
-2. Sample $x_1 \sim p(x|y_0)$. Alternatively, $X|Y = y_0$. This produces $(x_1, y_0)$.
-3. Then, sample $y_1 \sim p(y|x_1)$ to arrive at the second point in the distribution $(x_1,y_1)$
-4. Repeat steps 2 and 3, M times.
+This produces a sequence of pairs of random variables:
+$(X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...$ which satisfies the
+property of being a Markov chain.
 
-This produces a sequence of pairs of random variables: $(X_0,Y_0),(X_1,Y_1),(X_2,Y_2),(X_3,Y_3),...$ which satisfies the property of being a Markov chain.
+*Note that the conditional distribution of* $(X_i,Y_i)$, given all the
+previous pairs, only depends on $(X_{i-1},Y_{i-1})$ (Steorts)
 
-*Note that the conditional distribution of $(X_i,Y_i)$, given all the previous pairs, only depends on $(X_{i-1},Y_{i-1})$ (Steorts)*
+In a Bayesian perspective, Gibbs Sampling can be used to simulate a
+Markov chain distribution of unknown parameter $\theta$, $\pi (\theta)$.
 
+For initial conditions, suppose $\theta$ may be partitioned into
+$\theta = (\theta_1,...,\theta_r)$. It is then possible to simulate a
+random value of $\theta_i$ from a full conditional distribution
+$\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)$
+for $i = 1, 2, ...$. Then, these initial conditions can be used to
+simulate the distribution $\pi (\theta)$. Start with initial values
+$\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})$. Then, use the
+following steps for $m = 1, 2, ...$:
 
-In a Bayesian perspective, Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter $\theta$, $\pi (\theta)$. 
+*Bayesian Notes* Step 1: Sample $\theta_1^{(m)}$ from
+$\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})$
 
-For initial conditions, suppose $\theta$ may be partitioned into $\theta = (\theta_1,...,\theta_r)$. It is then possible to simulate a random value of $\theta_i$ from a full conditional distribution $\pi(\theta_i | \theta_1, \theta_2, ..., \theta_{i-1},\theta_{i+1},...,\theta_r)$ for $i = 1, 2, ...$. Then, these initial conditions can be used to simulate the distribution $\pi (\theta)$. Start with initial values $\theta^{(0)} = (\theta_1^{(0)},...,\theta_r^{(0)})$. Then, use the following steps for $m = 1, 2, ...$:
+Step 2: Sample $\theta_2^{(m)}$ from
+$\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})$
 
-*Bayesian Notes*
-Step 1: Sample $\theta_1^{(m)}$ from $\pi(\theta_1 | \theta_2^{(m-1)}, \theta_3^{(m-1)},..., \theta_4^{(m-1)})$
+Step r: Sample $\theta_r^{(m)}$ from
+$\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})$
 
-Step 2: Sample $\theta_2^{(m)}$ from $\pi(\theta_2 | \theta_1^{(m)}, \theta_3^{(m-1)},..., \theta_d^{(m-1)})$
+By the Monte Carlo rules, it is easy to show that if
+$\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$,
+and thus is the distribution $\pi (\theta)$. (Pritchard, 2000.)
 
-Step r: Sample $\theta_r^{(m)}$ from $\pi(\theta_r | \theta_1^{(m)}, \theta_2^{(m)},..., \theta_{r-1}^{(m)})$
+# Properties
 
-By the Monte Carlo rules, it is easy to show that if $\theta^{(m-1)}\sim \pi(\theta)$, then $\theta^{(m)}\sim \pi(\theta)$, and thus is the distribution $\pi (\theta)$. (Pritchard, 2000.)
+-   mixing rate
 
-# An example
-Consider an exponential model for observations $x = (x_1,...,x_n)$:
+-   burn in
 
-$$p(x|a,b) = abe^{-abx} \quad \text{for} (x>0)$$
+# Limitations
 
-and suppose the prior is:
-*ask kelsey about this*
+# A simulation example: Exponential and gamma model
+
+## Set up
+
+Consider an exponential model for our random observation
+$X_1,...,X_n \stackrel{iid}{\sim} \text{Exponential}(ab)$ (where the
+parameter $\lambda$ is the product of $a$ and $b$):
+
+$$p(X_i|a,b) = abe^{-abx} \quad \text{for} (x>0)$$ $a$ and $b$ is our
+unknown parameters. Now, suppose we put the following *independent*
+priors on $a$ and $b$: $$a{\sim} \text{Gamma}(1,1)$$
+$$b{\sim} \text{Gamma}(1,1)$$
+
+*Recall from probability*: If random variable A has Gamma(1,1)
+distribution, it has the pdf: $f_A(a) = e^{-a}$.
+
+Therefore, since $a$ and $b$ are independent priors, we can calculate
+joint distribution of our prior by simply multiplying their pdfs
+together:
+
 $$p(a,b) = e^{-a-b} \quad \text{for} (a,b>0)$$
 
+## Why is conditional distribution easier than joint?
 
-We want to sample from the posterior: $p(a,b|x)$. To start, we must look at likelihood.
-$$\begin{aligned} p(\vec{x}|a,b) &= \Pi_{i=1}^n p(x_i|a,b) \\ 
-&= \Pi_{i=1}^n abe^{-abx_i} \\ 
-&= (ab)^n e^{-ab\sum_{i=1}^nx_i}
-\end{aligned}$$
+Remember: our unknown parameters/ interests are $a$ and $b$.
 
-However, since the function is symmetric for a and b, we only need to solve for one. We can derive the conditional probability distributions, $A$ and $B$, respectively:
+To start with, given the above, we really want to know what the joint
+posterior distribution of $p(a,b|X)$ looks like. Unfortunately, however,
+we can't. In fact, Kristy and Regan are going to claim that, instead of
+directly sampling from the *joint* posterior distribution
+$p(a,b|\vec{X})$, it is easier to sample from conditional distributions:
+$p(a|\vec{X},b)$ and $p(b|\vec{X},a)$. (vector $X$ just means we are
+interested at a random sample - a bunch of $X_i$s.)
 
-$$\begin{aligned} p(a|x,b) &\propto_a p(\vec{x}|a,b)p(a,b) \\ 
-&= (ab)^n e^{-ab\sum_{i=1}^nx_i} \times e^{-a-b} \\ 
-&= (ab)^n e^{-a-b-ab\sum_{i=1}^nx_i} \\ 
-&\propto_a a^ne^{-a(b\sum_{i=1}^nx_i)}
-\end{aligned}$$
+Why? Let's write out their formulas:
 
-Thus, the posterior distributions:
-$$A \sim \text{Gamma}(n+1,b_n\sum_{i=1}^nx_i +1)$$
-$$B \sim \text{Gamma}(n+1,a_n\sum_{i=1}^nx_i +1)$$
+Joint (hard!):
 
-Then, we can apply our posterior distribution to Gibbs Sampling to find an estimate of the rate, $\lambda$, for our distribution.
+$$
+p(a,b|\vec{X})=\frac{p(a,b,\vec{X})}{p(\vec{X})}
+$$
+
+Conditional (easy!):
+
+$$
+p(a|b,\vec{X}) = \frac{p(a,b,\vec{X})}{p(b,\vec{X})}
+$$
+
+Note that they're both proportional to the whole, joint distribution
+$p(a,b,\vec{X})$. Let's calculate this: $$
+\begin{aligned}
+p(a,b,\vec{X})&= p(\vec{X}|a,b)*p(a,b)\\
+&=\Pi_{i=1}^n p(X_i|a,b) * e^{-a-b}  \\ 
+&= \Pi_{i=1}^n abe^{-abx_i} * e^{-a-b} \\ 
+&= (ab)^n e^{-ab\sum_{i=1}^nx_i}* e^{-a}*e^{-b} \\
+&= (ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}
+\end{aligned}
+$$ Let's start with the conditional distribution $p(a|b,\vec{X})$ that
+works:
+
+$$
+\begin{aligned}
+p(a|b,\vec{X}) &\propto p(a,b,\vec{X})\\
+&=(ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}\\
+&\propto a^ne^{-a(b\sum_{i=1}^nx_i+1)} \quad \quad\text{dump b-related terms}\\
+\end{aligned}
+$$
+
+This is a Gamma distribution!
+
+$$
+a|b,\vec{X}\sim \text{Gamma}(n+1,b\sum_{i=1}^nx_i +1)
+$$
+
+Symmetrically, the conditional distribution of $b$ is the same: $$
+b|a,\vec{X} \sim \text{Gamma}(n+1,a\sum_{i=1}^nx_i +1)
+$$
+
+**What about our joint, posterior distribution** $p(a,b|\vec{X})$? $$
+\begin{aligned}
+p(a,b|\vec{X}) &\propto p(a,b,\vec{X})\\
+&=(ab)^n e^{-a(b\sum_{i=1}^nx_i+1)}* e^{-b}\\
+\end{aligned}
+$$ We can't dump any terms, and this does not look familiar.
+
+## Getting to Gibbs
+
+Relating back to Gibbs sampling, since we have two dimensions $a$ and
+b\$, our Gibbs samples are: $(a_0, b_0)$, $(a_1, b_1)$, $(a_2, b_2)$,
+...... $(a_n, b_n)$, where the $n^{th}$ sample $(a_n, b_n)$, will always
+depend on the previous one $(a_{n-1}, b_{n-1})$, forming a Markov Chain.
+
+We draw samples as: 1. Choose the initial sample $(a_0, b_0)$ 2. Draw
+$a_1\sim p(a|b_0,\vec{X})$, $b_1\sim p(b|a_1,\vec{X})$ - this is
+$(a_1, b_1)$ 3. Draw $a_2\sim p(a|b_1,\vec{X})$,
+$b_2\sim p(b|a_2,\vec{X})$
+
+This means, after seeing some data $\vec{X}$, where we said
+$X_i\sim \text{Exponential}(ab)$, we will continuously draw posterior
+samples, from two dimensions $a$ and $b$, based on the following
+distribution ($N=$ number of random observation of $X$, $j=$ times of
+iteration):
+
+$$
+a_{j+1}|b_{j},\vec{X}\sim \text{Gamma}(N+1,b_j\sum_{i=1}^nx_i
++1)
+$$
+
+$$
+b_{j+1}|a_{j+1},\vec{X}
+\sim \text{Gamma}(N+1,a_{j+1}\sum_{i=1}^nx_i +1)
+$$
+
+------------------------------------------------------------------------
+
+# (continued) R: Gibbs Sampler
+
+The following content is adapted from Dr. Grinde's in class activity on
+Gibb's sampling. Here are the conditional distributions if needed:
+
+$$
+a_{j+1}|b_{j},\vec{X}\sim \text{Gamma}(N+1,b_j\sum_{i=1}^Nx_i
++1)
+$$
+
+$$
+b_{j+1}|a_{j+1},\vec{X}
+\sim \text{Gamma}(N+1,a_{j+1}\sum_{i=1}^Nx_i +1)
+$$
+
+## Set up
 
 ```{r}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
-library(MASS)
-library(ggplot2)
-#######################################
-# This function is a Gibbs sampler
-#
-# Args
-# start.a: initial value for a
-# start.b: initial value for b
-# n.sims: number of iterations to run
-# data: observed data, should be in a
-# data frame with one column
-#
-# Returns:
-# A two column matrix with samples
-# for a in first column and
-# samples for b in second column
-#######################################
+set.seed(1)
+
+# set up priors (mean)
+a0 <- mean(rgamma(1000, shape = 1, rate = 1))
+b0 <- mean(rgamma(1000, shape = 1, rate = 1))
+
+# true data distribution
+N <- 100  # 100 Xi observations
+X <- rexp(n = N, a0*b0) #create 100 observations where X~exp(ab)
+
+Xsum = sum(X) # for later use
 ```
-We are working with an exponential model that is dependent on variables a and b. Lambda = ab
-We will write out the actual equation later.
 
 ```{r}
-sampleGibbs <- function(start.a, start.b, n.sims, data){
-# get sum, which is sufficient statistic
-x <- sum(data)
-# get n
-n <- nrow(data)
-# create empty matrix, allocate memory for efficiency
-res <- matrix(NA, nrow = n.sims, ncol = 2)
-res[1,] <- c(start.a,start.b)
-for (i in 2:n.sims){
-# sample the values
-res[i,1] <- rgamma(1, shape = n+1,
-rate = res[i-1,2]*x+1)
-res[i,2] <- rgamma(1, shape = n+1,
-rate = res[i,1]*x+1)
+# store posterior samples of a and b
+alphas <- c()
+betas <- c()
+
+# input a0, b0
+alphas[1] <- a0
+betas[1] <- b0
+
+# choose how many iterations of Gibbs sampling to run
+j <- 1000
+```
+
+Note that we now choose $(a_0, b_0)$ as our initial sample $(a_0, b_0)$,
+100 iid observations of $X_i$s, and 1000 times of iterations to run our
+Gibbs Sampling ($j$).
+
+## Run!
+
+```{r}
+# run for j (1000) iterations
+
+for(i in 2:j){
+# update a and b
+a <- rgamma(n = 1, shape = N+1, rate = betas[i-1]*Xsum + 1)
+alphas[i] <- a
+
+b <- rgamma(n = 1, shape = N+1, rate = alphas[i]*Xsum + 1)
+betas[i] <- b
 }
-return(res) #this gives us a matrix of simulated drawings for a and b
-}
 ```
 
-```{r, include=FALSE}
-#ggplot(res.mat,aes(x=X1,y=X2))+
-  #geom_point()+
-  #xlab("Alpha")+
-  #ylab("Beta")
-```
-
-
+## Visualizations
 
 ```{r}
-# run Gibbs sampler
-n.sims <- 1000
-a = 0.2
-b = 0.3 #these are our actual parameter values
-
-set.seed(455)
-dist <- rexp(n = n.sims, a*b)
-data <-data.frame(dist)
-
-# return the result (res)
-res <- sampleGibbs(.25,.25, n.sims, data)
-res.mat <- data.frame(res)
-
-ggplot(res.mat, aes(x = X1*X2))+ #we know from our exponential distribution that lambda = ab, so we can find the distribution of lambda for parameter estimation
-  geom_histogram()+
-  ggtitle("Distribution of Lambda")
+# Histogram of samples
+par(mfrow=c(1,2))
+hist(alphas, xlab = expression(alpha), main = '')
+hist(betas, xlab = expression(beta), main = '')
 ```
 
+*Trace Plot: the behavior of the samples over j iterations:*
 
-Let's take a look at a simple example with discrete random variables.
-# Gibbs Sampling and Markov chain Monte Carlo (MCMC)
+```{r}
+iterations <- 1:j
+par(mfrow=c(1,2))
+plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
+plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
+```
+
+------------------------------------------------------------------------
+
+## Analyzing algorithm performance
+
+From the trace plot above, it seems like $b$ reaches a slightly lower
+range of fluctuation. What factors do you think that are involved in
+shaping the trace plots?
+
+*ANSWERS*: Many factors. Observed data ("Xsum"), (the way of choosing)
+the starting values of both parameters, sample size ("N"), number of
+iterations ("$j$") - if we run for enough long time, the samples will
+converge and starting value does not matter that much. If we choose
+wisely on starting value, it may takes us less time to see that the
+values $a$ and $b$ converge (greater mixing rate: evidence of a good
+MCMC algorithm performance) and their trace plots become stable.
+
+Noting that fluctuations are not necessarily bad. Mixing rate, which is
+how fast that sample averages converage, determines MCMC performance.
+Our trace plots could be improved by changing the initial starting
+values, $a_0, b_0$, and factors mentioned above all come in to play in
+determining the convergence shape of the trace plots.
