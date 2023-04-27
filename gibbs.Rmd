@@ -2,8 +2,8 @@
 title: "Gibbs Sampling"
 description: |
   Some additional details about the website
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -25,7 +25,7 @@ Markov Chain Monte Carlo is used to estimate probabilities by simulating repetit
 **MCMC: Metropolis Hastings**  
   Metropolis Hastings is a classic MCMC method used to obtain a sequence of random samples where the direct distribution is hard to find. In this method, a proposed distribution is utilized to sample new states. At each iteration, a new state is proposed. [Gunderson, 2020](https://gregorygundersen.com/blog/2020/02/23/gibbs-sampling/)  
 
-  Metropolis Hastings also utilizes an *acceptance rate*. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. [source: Jingyi Jessica Li](http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf)  
+  Metropolis Hastings also utilizes an *acceptance rate*. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. [Jingyi Jessica Li](http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf)  
 
 ## Concept {#gibbs}
 
@@ -237,7 +237,9 @@ b0 <- mean(rgamma(1000, shape = 1, rate = 1))
 
 # true data distribution
 N <- 100  # 100 Xi observations
-X <- rexp(n = N, a0*b0) #create 100 observations where X~exp(ab)
+truea <- 3
+trueb <- 4
+X <- rexp(n = N, truea*trueb) #create 100 observations where X~exp(ab)
 
 Xsum = sum(X) # for later use
 ```
@@ -258,11 +260,9 @@ betas[1] <- b0
 j <- 1000
 ```
 
-Note that we now choose $(a_0, b_0)$ as our initial sample $(a_0, b_0)$,
-100 iid observations of $X_i$s, and 1000 times of iterations to run our
-Gibbs Sampling ($j$).
+Note that we now choose our average prior values as our initial sample $(a_0, b_0)$ as our initial sample. We are drawing 100 iid observations of $X_i$s and running our Gibbs Sampling for 1000 iterations ($j$).
 
-Since we already know that $(a_0, b_0)$ are the "correct" values for $(a,b)$, we can predict that our Gibbs sampling will fluctuate around these values.
+Since we already know that $(a=3, b=4)$ are the "correct" values for $(a,b)$, we can predict that our Gibbs sampling will fluctuate around these values.
 
 ## Run!
 
@@ -287,6 +287,8 @@ par(mfrow=c(1,2))
 hist(alphas, xlab = expression(alpha), main = '')
 hist(betas, xlab = expression(beta), main = '')
 ```
+This looks correct because our true values of a and b are 3 and 4 respectively.  
+
 
 *Trace Plot: the behavior of the samples over j iterations:*
 
@@ -295,25 +297,32 @@ iterations <- 1:j
 par(mfrow=c(1,2))
 plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
 abline(h = a0, col = "red")
+text(x=200, y=1.2, 'a0', col = "red")
+abline(h = truea, col = "blue")
+text(x=200, y=truea+0.2, 'True a', col = "blue")
 plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
-abline(h = b0, col = "blue")
+abline(h = b0, col = "red")
+text(x=100, y=1.3, 'b0', col = "red")
+abline(h = trueb, col = "blue")
+text(x=100, y=trueb+0.2, 'True b', col = "blue")
 ```
 
 ------------------------------------------------------------------------
 
 ## Analyzing algorithm performance
 
-From the trace plot above, it seems like $b$ reaches a slightly lower
-range of fluctuation. What factors do you think that are involved in
+From observing the trace plot above, what can we say about our Gibbs Sampler's performance? What factors do you think that are involved in
 shaping the trace plots?
 
-*ANSWERS*: Many factors. Observed data ("Xsum"), (the way of choosing)
-the starting values of both parameters, sample size ("N"), number of
+*ANSWERS*: 
+From observing our trace plots, we can say that our Gibbs Sampler is a good simulation to find our true values. We can see that even though it starts at our initial values, it quickly jumps to fluctuate around our true values. We could say that there is a burn in period of about 100 trials for both parameters because it takes about 100 trials to converge around the true values.  
+
+Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("N"), number of
 iterations ("$j$") - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
 wisely on starting value, it may takes us less time to see that the
 values $a$ and $b$ converge (greater mixing rate: evidence of a good
-MCMC algorithm performance) and their trace plots become stable.
+MCMC algorithm performance) and their trace plots become stable.  
 
 Noting that fluctuations are not necessarily bad. Mixing rate, which is
 how fast that sample averages converage, determines MCMC performance.

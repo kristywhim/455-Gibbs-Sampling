@@ -2138,7 +2138,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>Markov Chain Monte Carlo is used to estimate probabilities by simulating repetitions of an experiment. It is usually used in situations where an exact probability is difficult to calculate. [Larsen &amp; Marx, 2018]</p>
 <p><strong>MCMC: Metropolis Hastings</strong><br />
 Metropolis Hastings is a classic MCMC method used to obtain a sequence of random samples where the direct distribution is hard to find. In this method, a proposed distribution is utilized to sample new states. At each iteration, a new state is proposed. <a href="https://gregorygundersen.com/blog/2020/02/23/gibbs-sampling/">Gunderson, 2020</a></p>
-<p>Metropolis Hastings also utilizes an <em>acceptance rate</em>. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. <a href="http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf">source: Jingyi Jessica Li</a></p>
+<p>Metropolis Hastings also utilizes an <em>acceptance rate</em>. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. <a href="http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf">Jingyi Jessica Li</a></p>
 <h2 id="gibbs">Concept</h2>
 <p>Gibbs Sampling is a Markov Chain Monte Carlo (MCMC) method that that is used for multidimensional models. Gibbs is used when sampling using joint distributions is too difficult, but it is easy to sample from conditional probabilities.</p>
 <p><strong>Gibbs Sampling Definition</strong> Suppose we want to obtain <span class="math inline">\(n\)</span> samples of <span class="math inline">\(X = (x_1, x_2, x_3, ..., x_m)\)</span> from a joint distribution <span class="math inline">\(p(x,y)\)</span>.</p>
@@ -2292,18 +2292,20 @@ b_{j+1}|a_{j+1},\vec{X}
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
-<span></span>
 <span><span class='co'># set up priors (mean)</span></span>
 <span><span class='va'>a0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='va'>b0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='co'># true data distribution</span></span>
 <span><span class='va'>N</span> <span class='op'>&lt;-</span> <span class='fl'>100</span>  <span class='co'># 100 Xi observations</span></span>
-<span><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>N</span>, <span class='va'>a0</span><span class='op'>*</span><span class='va'>b0</span><span class='op'>)</span> <span class='co'>#create 100 observations where X~exp(ab)</span></span>
+<span><span class='va'>truea</span> <span class='op'>&lt;-</span> <span class='fl'>3</span></span>
+<span><span class='va'>trueb</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
+<span><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>N</span>, <span class='va'>truea</span><span class='op'>*</span><span class='va'>trueb</span><span class='op'>)</span> <span class='co'>#create 100 observations where X~exp(ab)</span></span>
 <span></span>
 <span><span class='va'>Xsum</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span> <span class='co'># for later use</span></span></code></pre>
 </div>
 </div>
+<p>Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># store posterior samples of a and b</span></span>
@@ -2311,6 +2313,7 @@ b_{j+1}|a_{j+1},\vec{X}
 <span><span class='va'>betas</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span></span>
 <span><span class='co'># input a0, b0</span></span>
+<span><span class='co'># we are choosing the starting points to be the mean of our prior distribution</span></span>
 <span><span class='va'>alphas</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>a0</span></span>
 <span><span class='va'>betas</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>b0</span></span>
 <span></span>
@@ -2318,9 +2321,8 @@ b_{j+1}|a_{j+1},\vec{X}
 <span><span class='va'>j</span> <span class='op'>&lt;-</span> <span class='fl'>1000</span></span></code></pre>
 </div>
 </div>
-<p>Note that we now choose <span class="math inline">\((a_0, b_0)\)</span> as our initial sample <span class="math inline">\((a_0, b_0)\)</span>,
-100 iid observations of <span class="math inline">\(X_i\)</span>s, and 1000 times of iterations to run our
-Gibbs Sampling (<span class="math inline">\(j\)</span>).</p>
+<p>Note that we now choose our average prior values as our initial sample <span class="math inline">\((a_0, b_0)\)</span> as our initial sample. We are drawing 100 iid observations of <span class="math inline">\(X_i\)</span>s and running our Gibbs Sampling for 1000 iterations (<span class="math inline">\(j\)</span>).</p>
+<p>Since we already know that <span class="math inline">\((a=3, b=4)\)</span> are the “correct” values for <span class="math inline">\((a,b)\)</span>, we can predict that our Gibbs sampling will fluctuate around these values.</p>
 <h2 id="run">Run!</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2346,23 +2348,32 @@ Gibbs Sampling (<span class="math inline">\(j\)</span>).</p>
 </div>
 <p><img src="gibbs_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
+<p>This looks correct because our true values of a and b are 3 and 4 respectively.</p>
 <p><em>Trace Plot: the behavior of the samples over j iterations:</em></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>iterations</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='va'>j</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mfrow<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>alphas</span> <span class='op'>~</span> <span class='va'>iterations</span>, xlab <span class='op'>=</span> <span class='st'>'Iteration'</span>, ylab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>alpha</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>'l'</span><span class='op'>)</span></span>
-<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>betas</span> <span class='op'>~</span> <span class='va'>iterations</span>, xlab <span class='op'>=</span> <span class='st'>'Iteration'</span>, ylab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>beta</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>'l'</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='va'>a0</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fl'>200</span>, y<span class='op'>=</span><span class='fl'>1.2</span>, <span class='st'>'a0'</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='va'>truea</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fl'>200</span>, y<span class='op'>=</span><span class='va'>truea</span><span class='op'>+</span><span class='fl'>0.2</span>, <span class='st'>'True a'</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>betas</span> <span class='op'>~</span> <span class='va'>iterations</span>, xlab <span class='op'>=</span> <span class='st'>'Iteration'</span>, ylab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='va'>beta</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>'l'</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='va'>b0</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fl'>100</span>, y<span class='op'>=</span><span class='fl'>1.3</span>, <span class='st'>'b0'</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/abline.html'>abline</a></span><span class='op'>(</span>h <span class='op'>=</span> <span class='va'>trueb</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/graphics/text.html'>text</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='fl'>100</span>, y<span class='op'>=</span><span class='va'>trueb</span><span class='op'>+</span><span class='fl'>0.2</span>, <span class='st'>'True b'</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="gibbs_files/figure-html5/unnamed-chunk-5-1.png" width="624" /></p>
 </div>
 <hr />
 <h2 id="analyzing-algorithm-performance">Analyzing algorithm performance</h2>
-<p>From the trace plot above, it seems like <span class="math inline">\(b\)</span> reaches a slightly lower
-range of fluctuation. What factors do you think that are involved in
+<p>From observing the trace plot above, what can we say about our Gibbs Sampler’s performance? What factors do you think that are involved in
 shaping the trace plots?</p>
-<p><em>ANSWERS</em>: Many factors. Observed data (“Xsum”), (the way of choosing)
-the starting values of both parameters, sample size (“N”), number of
+<p><em>ANSWERS</em>:
+From observing our trace plots, we can say that our Gibbs Sampler is a good simulation to find our true values. We can see that even though it starts at our initial values, it quickly jumps to fluctuate around our true values. We could say that there is a burn in period of about 100 trials for both parameters because it takes about 100 trials to converge around the true values.</p>
+<p>Many factors can determine our trace plots. Observed data (“Xsum”), (the way of choosing) the starting values of both parameters, sample size (“N”), number of
 iterations (“<span class="math inline">\(j\)</span>”) - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
 wisely on starting value, it may takes us less time to see that the
