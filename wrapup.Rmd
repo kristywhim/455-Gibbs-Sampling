@@ -1,7 +1,7 @@
 ---
 title: "Outro"
 description: |
-  Some additional details about the website
+  Thank you for reading!
 ---
 
-# A few more... {#wrapup}
+Thank you again for having interest on our page.
