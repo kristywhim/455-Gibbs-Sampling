@@ -89,7 +89,7 @@ g(p|X)  &\propto f(X\mid p) f(p)\\
 \end{aligned}
 $$
 
-We only conserve terms with $p$ and dump anything else such as constants $a, b$. Notice how $a,b, X$ and the number of trial (1 in this case since we only have one random observation) are incorporated into the posterior distribution.
+We only conserve terms with $p$ and dump anything else such as constants $a, b$. Notice how $a,b, X$ and the number of trial (1 in this case since we only have one random observation) are incorporated into the posterior distribution. 
 
-
+The example above works with single unknown parameter $p$, and Gibbs sampling works with Bayesian to obtain posterior samples of *multiple* unknown parameters (many dimensions). Furthermore, it is noteworthy that Gibbs is only applied to situations when we have multiple unknown parameters and it is hard to calculate the *joint*, posterior distribution of all parameters using the method above (so we do not have a single posterior distributions, but many - this means we cannot derive i.i.d. samples but depedent samples), and it is easier/ feasible to derive their individual *conditional* posterior distributions. We will learn about it more on the next page!
 
