@@ -27,7 +27,7 @@ Markov Chain Monte Carlo is used to estimate probabilities by simulating repetit
 **MCMC: Metropolis Hastings**  
   Metropolis Hastings is a classic MCMC method used to obtain a sequence of random samples where the direct distribution is hard to find. In this method, a proposed distribution is utilized to sample new states. At each iteration, a new state is proposed. [Gunderson, 2020](https://gregorygundersen.com/blog/2020/02/23/gibbs-sampling/)  
 
-  Metropolis Hastings also utilizes an *acceptance rate*. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. [Jingyi Jessica Li](http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf)  
+  Metropolis Hastings also utilizes an *acceptance rate*. When you get a random sample, a probability equation is used to decide whether or not to accept the new, proposed values/ samples. Gibbs Sampling is a special case of Metropolis Hastings with conditional distributions and an acceptance rate = 1. This means that in Gibbs Sampling, the new proposed state is accepted 100% of the time. [Jingyi Jessica Li](http://www.stat.ucla.edu/~jingyi.li/statsm254-s14/Lecture11.pdf)  
 
 ## Concept {#gibbs}
 
