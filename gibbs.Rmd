@@ -247,6 +247,7 @@ Xsum = sum(X) # for later use
 Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.
 
 ```{r}
+set.seed(1)
 # store posterior samples of a and b
 alphas <- c()
 betas <- c()
@@ -267,6 +268,7 @@ Since we already know that $(a=3, b=4)$ are the "correct" values for $(a,b)$, we
 ## Run!
 
 ```{r}
+set.seed(1)
 # run for j (1000) iterations
 
 for(i in 2:j){
@@ -282,6 +284,7 @@ betas[i] <- b
 ## Visualizations
 
 ```{r}
+set.seed(1)
 # Histogram of samples
 par(mfrow=c(1,2))
 hist(alphas, xlab = expression(alpha), main = '')
@@ -293,6 +296,7 @@ This looks correct because our true values of a and b are 3 and 4 respectively.
 *Trace Plot: the behavior of the samples over j iterations:*
 
 ```{r}
+set.seed(1)
 iterations <- 1:j
 par(mfrow=c(1,2))
 plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
