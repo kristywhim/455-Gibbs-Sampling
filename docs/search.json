@@ -21,8 +21,8 @@
       "title": "Mathematical Statistics: Gibbs Sampling",
       "description": "Welcome to the website. This website introduces Gibbs Sampling in Bayesian statistics world. This is a class project from course MATH/ STAT 455: Mathematical Statistics at Macalester College. The contents in this blog are collaborative efforts from Kristy Ma and Regan Brodine.\n",
       "author": [],
-      "contents": "\r\nHi!\r\nTo start exploring, simply navigate to tabs on the upper right corner:\r\n“Home”: This page\r\n“Intro to Bayesian”: Bayesian philosophy; Bayes rules; Posterior Exercise\r\n“Gibbs Sampling”: Gibbs Sampling Background; Properties and Limitations; Gibbs Sampling and Markov chain Monte Carlo (MCMC); Simulation Example of Gibbs Sampler\r\n“Applications”: Gibbs Sampling in statistical genetics\r\n“Wrap-up”: Outro!\r\nHave fun!\r\nIf you have any questions, please reach out to kristy20011001@gmail.com and rbrodine@macalester.edu. Thank you!\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-04-28T10:51:49-05:00"
+      "contents": "\r\nHi!\r\nWelcome to our project page on Gibbs Sampling - an example of Markov chain Monte Carlo (MCMC) algorithms that uses conditional probabilities to iteratively draw posterior samples for estimating the probabiltiy distribution of unknown parameters. This also ties with a cool application in statistical genetics to infer genotypes in unknown population groups with Hardy Weinberg Equilibrium.\r\nTo start exploring, simply navigate to tabs on the upper right corner:\r\n“Home”: This page\r\n“Intro to Bayesian”: Bayesian philosophy; Bayes rules; Posterior Exercise\r\n“Gibbs Sampling”: Gibbs Sampling Background; Properties and Limitations; Gibbs Sampling and MCMC; Simulation Example of Gibbs Sampler\r\n“Applications”: Gibbs Sampling in statistical genetics\r\n“Wrap-up”: Outro!\r\nHave fun!\r\nIf you have any questions, please reach out to kristy20011001@gmail.com and rbrodine@macalester.edu. Thank you!\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-04-28T12:38:59-05:00"
     },
     {
       "path": "sim.html",

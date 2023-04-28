@@ -6,11 +6,13 @@ site: distill::distill_website
 ---
 
 # Hi!
+Welcome to our project page on Gibbs Sampling - an example of Markov chain Monte Carlo (MCMC) algorithms that uses conditional probabilities to iteratively draw posterior samples for estimating the probabiltiy distribution of unknown parameters. This also ties with a cool application in statistical genetics to infer genotypes in unknown population groups with Hardy Weinberg Equilibrium. 
+
 To start exploring, simply navigate to tabs on the upper right corner:
 
 1) "Home": This page
 2) "Intro to Bayesian": Bayesian philosophy; Bayes rules; Posterior Exercise
-3) "Gibbs Sampling": Gibbs Sampling Background; Properties and Limitations; Gibbs Sampling and Markov chain Monte Carlo (MCMC); Simulation Example of Gibbs Sampler
+3) "Gibbs Sampling": Gibbs Sampling Background; Properties and Limitations; Gibbs Sampling and MCMC; Simulation Example of Gibbs Sampler
 4) "Applications": Gibbs Sampling in statistical genetics
 5) "Wrap-up": Outro!
 
