@@ -247,6 +247,7 @@ Xsum = sum(X) # for later use
 Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.
 
 ```{r}
+set.seed(1)
 # store posterior samples of a and b
 alphas <- c()
 betas <- c()
@@ -267,6 +268,7 @@ Since we already know that $(a=3, b=4)$ are the "correct" values for $(a,b)$, we
 ## Run!
 
 ```{r}
+set.seed(1)
 # run for j (1000) iterations
 
 for(i in 2:j){
@@ -282,17 +284,19 @@ betas[i] <- b
 ## Visualizations
 
 ```{r}
+set.seed(1)
 # Histogram of samples
 par(mfrow=c(1,2))
 hist(alphas, xlab = expression(alpha), main = '')
 hist(betas, xlab = expression(beta), main = '')
 ```
-This looks correct because our true values of a and b are 3 and 4 respectively.  
+This looks correct because our true values of $a$ and $b$ are 3 and 4 respectively.  
 
 
 *Trace Plot: the behavior of the samples over j iterations:*
 
 ```{r}
+set.seed(1)
 iterations <- 1:j
 par(mfrow=c(1,2))
 plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
@@ -317,7 +321,7 @@ shaping the trace plots?
 *ANSWERS*: 
 From observing our trace plots, we can say that our Gibbs Sampler is a good simulation to find our true values. We can see that even though it starts at our initial values, it quickly jumps to fluctuate around our true values. We could say that there is a burn in period of about 100 trials for both parameters because it takes about 100 trials to converge around the true values.  
 
-Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("N"), number of
+Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("$N$"), number of
 iterations ("$j$") - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
 wisely on starting value, it may takes us less time to see that the
