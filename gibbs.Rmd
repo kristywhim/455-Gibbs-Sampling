@@ -233,10 +233,6 @@ $$
 
 ```{r}
 set.seed(1)
-# set up priors (mean)
-a0 <- mean(rgamma(1000, shape = 1, rate = 1))
-b0 <- mean(rgamma(1000, shape = 1, rate = 1))
-
 # true data distribution
 N <- 100  # 100 Xi observations
 truea <- 3
@@ -244,9 +240,13 @@ trueb <- 4
 X <- rexp(n = N, truea*trueb) #create 100 observations where X~exp(ab)
 
 Xsum = sum(X) # for later use
+
+# set up priors (mean)
+a0 <- mean(rgamma(1000, shape = 1, rate = 1))
+b0 <- mean(rgamma(1000, shape = 1, rate = 1))
 ```
 
-Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.
+We are setting up our data distribution to be an exponential distribution with $\lambda = ab$. In our data, we are setting the true value of $a = 3$ and the true value of $b = 4$. Additionally, we are setting up our priors that we have previously calculated. Next, we need to choose starting values for our Gibbs sampler. It is important to choose a starting point that is reasonably close to our true values. Therefore, we decided to use the mean of our priors, $a_0$ and $b_0$, to be our starting values.
 
 ```{r}
 set.seed(1)
@@ -265,7 +265,7 @@ j <- 1000
 
 Note that we now choose our average prior values as our initial sample $(a_0, b_0)$ as our initial sample. We are drawing 100 iid observations of $X_i$s and running our Gibbs Sampling for 1000 iterations ($j$).
 
-Since we already know that $(a=3, b=4)$ are the "correct" values for $(a,b)$, we can predict that our Gibbs sampling will fluctuate around these values.
+Our sampler will start at our initial values $a_0,b_0$. Then, it will update through 1000 iterations. Since we already know that $(a=3, b=4)$ are the "correct" values for $(a,b)$, we can predict that our Gibbs sampling will fluctuate around these values.
 
 ## Run!
 
@@ -292,7 +292,7 @@ par(mfrow=c(1,2))
 hist(alphas, xlab = expression(alpha), main = '')
 hist(betas, xlab = expression(beta), main = '')
 ```
-This looks correct because our true values of a and b are 3 and 4 respectively.  
+This looks correct because our true values of $a$ and $b$ are 3 and 4 respectively.  
 
 
 *Trace Plot: the behavior of the samples over j iterations:*
@@ -323,7 +323,7 @@ shaping the trace plots?
 *ANSWERS*: 
 From observing our trace plots, we can say that our Gibbs Sampler is a good simulation to find our true values. We can see that even though it starts at our initial values, it quickly jumps to fluctuate around our true values. We could say that there is a burn in period of about 100 trials for both parameters because it takes about 100 trials to converge around the true values.  
 
-Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("N"), number of
+Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("$N$"), number of
 iterations ("$j$") - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
 wisely on starting value, it may takes us less time to see that the
@@ -335,3 +335,8 @@ how fast that sample averages converage, determines MCMC performance.
 Our trace plots could be improved by changing the initial starting
 values, $a_0, b_0$, and factors mentioned above all come in to play in
 determining the convergence shape of the trace plots.
+
+
+------------------------------------------------------------------------
+We can also observe what our trace plots would look like under less ideal conditions. For example, what would happen if we chose a starting value that was very far away from our true $a$ and $b$?
+
