@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Often times in population genetics research, it is useful to classify individuals in a sample into populations. While other areas of study may use factors like linguistic, cultural, or physical characters, it is not always easy to assign populations based on genotypes.  
 
-Pritchard et al. 2000 proposed a method to assign individuals to populations and simultaneously estimate allele frequencies: homozygous dominant, heterozygous, and homozygous recessive. This method can utilize various genetic markerss as indication of alleles including SNPS, RFLPS, microsatellites, etc. Additionally, they follow a few assumptions:  
+[Pritchard et al. 2000](https://web.stanford.edu/group/pritchardlab/publications/pdfs/PritchardEtAl00.pdf) proposed a method to assign individuals to populations and simultaneously estimate allele frequencies: homozygous dominant, heterozygous, and homozygous recessive. This method can utilize various genetic markers as indication of alleles including SNPS, RFLPS, micro-satellites, etc. Additionally, they follow a few assumptions:  
 
 + Assumes markers are unlinked loci → can be drawn as independent samples  
   

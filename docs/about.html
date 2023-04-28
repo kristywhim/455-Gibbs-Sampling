@@ -90,27 +90,27 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Mathematical Statistic: Gibbs Sampling: Bayesian statistical world</title>
 
-  <meta property="description" itemprop="description" content="Some additional details about the website"/>
+  <meta property="description" itemprop="description" content="Bayesian is the workplace for Gibbs sampler"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Mathematical Statistic: Gibbs Sampling: Bayesian statistical world"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Some additional details about the website"/>
+  <meta property="og:description" content="Bayesian is the workplace for Gibbs sampler"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Mathematical Statistic: Gibbs Sampling"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Mathematical Statistic: Gibbs Sampling: Bayesian statistical world"/>
-  <meta property="twitter:description" content="Some additional details about the website"/>
+  <meta property="twitter:description" content="Bayesian is the workplace for Gibbs sampler"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["Bayesian statistical world"]},{"type":"character","attributes":{},"value":["Some additional details about the website\n"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["Bayesian statistical world"]},{"type":"character","attributes":{},"value":["Bayesian is the workplace for Gibbs sampler\n"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2074,7 +2074,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2094,7 +2094,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Bayesian statistical world","description":"Some additional details about the website","authors":[]}
+{"title":"Bayesian statistical world","description":"Bayesian is the workplace for Gibbs sampler","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2103,6 +2103,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Mathematical Statistic: Gibbs Sampling</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2122,13 +2123,67 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>Bayesian statistical world</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Some additional details about the website</p></p>
+<p><p>Bayesian is the workplace for Gibbs sampler</p></p>
 </div>
 
 
 <div class="d-article">
+<p>Gibbs Sampler involves working with conditional distributions - the core of Bayesian ideas. Let’s take a look at Bayesian World and how they are connected.</p>
 <h1 id="about">Background: Bayesian V.S. Frequentist</h1>
+<p>Frequentist is the dominant philosophy and category in the modern statistical world. In fact, many concepts/ thinkings/ logics we have been exposed from statistics are from Frequentist beliefs, such as “confidence interval”, “p-value”, “the true value of an unknown parameter”, etc. However, Gibb’s sampler is a method that applies conditional probability distribution, where the “conditioned” nature indicates its Bayesian flavor. This page serves as a refresher to get a taste of Bayesian Statistics - we will briefly talk about its knowledge building process of estimating unknown parameters, learn Bayes rule, and do a little exercise on deriving the <em>posterior distribution</em> of an unknown parameter.</p>
+<p>Unlike Frequentists who deem unknown parameters as unknown, fixed constants, Bayesians think about them as <strong>random variables</strong> and constantly changing their beliefs about unknown parameters based on the data we truly see - they start by proposing a possible probability distribution for the unknown parameter (<strong>prior distribution</strong>), and find out what they actually see from real data to update/ change the beliefs by deriving <strong>posterior distribution</strong> based on the prior distribution and data. Furthermore, by seeing more data, they continue to update their knowledge on the parameter (for example, shrink the parameter space/ support by lowering the plausibility of some values of which the parameter can take).</p>
+<p>We can imagine the parameter is a Plasticine or modelling clay. When we buy a Plasticine from a store, it has its original shape (<em>prior</em> - the beginning hypothesis/ information we have about the parameter), and its shape constantly changes corresponding to the external forces applied (<em>data we’ve seen so far</em>). The resulted shapes are the <em>posterior</em> - the information we gained about parameter after seeing data.</p>
+<p>The end goal of Bayesian estimation is not to see a convergence and shrinkage of parameter space and determine the most likely value of a parameter- that sounds like “Frequentist”. In Bayesian, we never end updating the knowledge based on data.</p>
+<p>Sounds like there is lots of “based on”, “dependent on”, and “after seeing…” in Bayesian - YES, this explains why our topic of Gibbs Sampling is contextualized on Bayesian side - Gibbs sampler involves with working with conditional distributions.</p>
+<p>Figure below illustrates Bayesian knowledge-building process: <a href="https://www.bayesrulesbook.com/chapter-1.html">Johnson, A. et.al.</a> If we heard from many 5-star reviews from a restaurant that you are going to visit, we may start expecting it to be a 5-star restaurant.</p>
+<p>You sit down and they serve you a really soggy noodles, you’d be upset and surprised - at the same time, you overthrow your previous assumption about the restaurant and thought it was really just a 3-star level. Then, they serve you a really yummy dish and you change your impression back to 4-star as for now…</p>
+<figure>
+<img src="img/restaurant.png" alt="An simplification of Bayesians thinking process" />
+<figcaption aria-hidden="true">An simplification of Bayesians thinking process</figcaption>
+</figure>
+<p>Through observing and changing, Bayesians are giving themselves more flexibility of estimating parameters of interest. They do estimations based on “Bayes rule” - a central idea and foundation of Bayesian statistics.</p>
 <h1 id="bayes-rule">Bayes Rule</h1>
+<p>Connecting back to probability terms, let’s remind ourselves the Bayes rule of two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, generalized by equation below:</p>
+<p><span class="math display">\[
+P(A| B )= \frac{P(A\cap B)} {P(B)}=\frac{P(B|A)P(A)}{P(B)}
+\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span> are the independent probabilities that they happen</li>
+<li><span class="math inline">\(P(A\cap B)\)</span> is the probability that both A and B happen</li>
+<li><span class="math inline">\(P(B|A)\)</span> is the conditional probability given A happens</li>
+</ul>
+<p>By knowing the independent probabilities of <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, and seeing the probability of <span class="math inline">\(B\)</span> happens given A happens, we can derive what do we know about <span class="math inline">\(A\)</span> given B.</p>
+<p>In Bayes, <span class="math inline">\(A\)</span> will reflect our known parameters, and <span class="math inline">\(B\)</span> will reflect our data. Let’s take a further step to see how this connect to probability distribution as a whole.</p>
+<h1 id="use-bayes-rule-in-probability-distribution">Use Bayes rule in probability distribution</h1>
+<p>Suppose we are interested in the unknown parameter <span class="math inline">\(\theta\)</span>. How do we update our guess?</p>
+<p>First, We start by proposing a <strong>prior</strong> distribution to the unknown parameter <span class="math inline">\(\theta\)</span>: denote this as <span class="math inline">\(p(\theta)\)</span> if discrete or <span class="math inline">\(f(\theta)\)</span> if continous. For example, if <span class="math inline">\(\theta\)</span> represents a probability, then one may suggest their prior to be <span class="math inline">\(\theta \sim Unif(0,1)\)</span>. There is no right or wrong/ good or bad judgment calls to priors- they are completely subjective and based on personal knowledge/ background research to the parameter.</p>
+<p>Next, we will incorporate our data by calculating the <strong>likelihood</strong> of seeing a sequence of observations <span class="math inline">\(\vec{X}\)</span> under <span class="math inline">\(\theta\)</span>: denoted as <span class="math inline">\(f(\vec{X}|\theta)\)</span>.</p>
+<p>Thirdly, We are interested in <strong>posterior distribution</strong> of the parameter - update! Denote this as <span class="math inline">\(g(\theta|\vec{X})\)</span> to differentiate the updated distribution.</p>
+<p>According to Bayes rule, we can calculate the posterior distribution <span class="math inline">\(g(\theta|\vec{X})\)</span> by (suppose <span class="math inline">\(X, \theta\)</span> are both continous random variables):</p>
+<p><span class="math display">\[
+g\left(\theta \mid \vec{X} \right) =\frac{f\left(\vec{X} \mid \theta\right) f(\theta)}{f(\vec{X})}
+\]</span>
+where <span class="math inline">\(f\left(\vec{X} \mid \theta\right)\)</span> is the joint pdf/ likelihood given <span class="math inline">\(\theta\)</span> and the denominator <span class="math inline">\(f(\vec{X})\)</span> is the marginal pdf of <span class="math inline">\(\vec{X}\)</span>.</p>
+<p>Notice that the posterior distribution of <span class="math inline">\(\theta\)</span> does not depend on <span class="math inline">\(\vec{X}\)</span>, that leads us to a convention in deriving the posterior distribution <span class="math inline">\(g(\theta \mid \vec{X})\)</span> because we can ignore the actual composition of <span class="math inline">\(f(\vec{X})\)</span> as it only serves as the normalizing constant in deriving a pdf for a random variable. Therefore:</p>
+<p><span class="math display">\[
+g\left(\theta \mid \vec{X} \right) \propto {f\left(\vec{X} \mid \theta\right) f(\theta)}
+\]</span>
+Note that the pdf of posterior distribution of <span class="math inline">\(\theta\)</span> is <strong>not equal</strong> to the right hand side - we still need the marginal pdf of <span class="math inline">\(\vec{X}\)</span> to calculate the exact pdf. But the above equation gives us the <em>kernels</em> in a pdf - they are sufficient enough to let us find out the posterior distribution of <span class="math inline">\(\theta\)</span>.</p>
+<h2 id="exercise-deriving-posterior-distribution-for-theta">Exercise: deriving posterior distribution for <span class="math inline">\(\theta\)</span></h2>
+<p>Let’s try a simple example (from Dr. Kelsey Grinde’s in class material on Bayesian Statistics). Suppose we observed one random observation of a coin flip, <span class="math inline">\(X\sim Bern(p)\)</span>, and we are interested in <span class="math inline">\(p\)</span>, where we assume its prior distribution: <span class="math inline">\(p \sim Beta (a,b)\)</span>. We derive the posterior distribution <span class="math inline">\(g(p \mid X)\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+g(p|X)  &amp;\propto f(X\mid p) f(p)\\
+&amp;= [p^X (1-p)^{1-X}] \quad [\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)} p^{a-1} (1-p)^{b-1}]\\
+&amp; \propto p^X(1-p)^{1-X} p^{a-1}(1-p)^{b-1} \\
+&amp; =p^{X+a-1}(1-p)^{1-X+b-1} \\
+&amp; p \mid X \sim \operatorname{Beta}(X+a, 1-X+b) \\
+&amp;
+\end{aligned}
+\]</span></p>
+<p>We only conserve terms with <span class="math inline">\(p\)</span> and dump anything else such as constants <span class="math inline">\(a, b\)</span>. Notice how <span class="math inline">\(a,b, X\)</span> and the number of trial (1 in this case since we only have one random observation) are incorporated into the posterior distribution.</p>
+<p>The example above works with single unknown parameter <span class="math inline">\(p\)</span>, and Gibbs sampling works with Bayesian to obtain posterior samples of <em>multiple</em> unknown parameters (many dimensions). Furthermore, it is noteworthy that Gibbs is only applied to situations when we have multiple unknown parameters and it is hard to calculate the <em>joint</em>, posterior distribution of all parameters using the method above (so we do not have a single posterior distributions, but many - this means we cannot derive i.i.d. samples but depedent samples), and it is easier/ feasible to derive their individual <em>conditional</em> posterior distributions. We will learn about it more on the next page!</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
@@ -2137,6 +2192,15 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
