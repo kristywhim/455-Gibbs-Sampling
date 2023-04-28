@@ -2074,7 +2074,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2103,6 +2103,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Mathematical Statistic: Gibbs Sampling</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2135,7 +2136,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>Conditional Probability Distribution - variables are dependent on each other (ex. p(x) given Y = y)</p></li>
 </ol>
 <figure>
-<img src="/Users/reganbrodine/Documents/STAT%20455%20Math%20Stats/slide.jpg" alt="Joint vs Conditional Distributions" />
+<img src="img/jointpdf.png" alt="Joint vs Conditional Distributions" />
 <figcaption aria-hidden="true">Joint vs Conditional Distributions</figcaption>
 </figure>
 <h1 id="markov-chain-monte-carlo-mcmc">Markov Chain Monte Carlo (MCMC)</h1>
@@ -2158,7 +2159,7 @@ x_{n+1}^{(m)}&amp;\sim P(x^{(m)}|x_{n+1}^{(1)},...,x_{n+1}^{(m-1)})
 1. Set <span class="math inline">\((x_0,y_0)\)</span> to some starting value.<br />
 2. Sample <span class="math inline">\(x_1 \sim p(x|y_0)\)</span>. Alternatively, <span class="math inline">\(X|Y = y_0\)</span>. This produces <span class="math inline">\((x_1, y_0)\)</span>.<br />
 3. Then, sample <span class="math inline">\(y_1 \sim p(y|x_1)\)</span> to arrive at the second point in the distribution <span class="math inline">\((x_1,y_1)\)</span><br />
-4. Repeat steps 2 and 3, <span class="math inline">\(M\)</span> times.</p>
+4. Repeat steps 2 and 3, <span class="math inline">\(n\)</span> times.</p>
 <p>This produces a sequence of pairs of random variables, <span class="math inline">\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),...\)</span>, which satisfies the property of being a Markov chain. Note that the conditional distribution of <span class="math inline">\((X_i,Y_i)\)</span>, given all the previous pairs, only depends on <span class="math inline">\((X_{i-1},Y_{i-1})\)</span> <a href="http://www2.stat.duke.edu/~rcs46/modern_bayes17/lecturesModernBayes17/lecture-7/07-gibbs.pdf">Steorts</a></p>
 <p><strong>In a Bayesian Perspective</strong><br />
 Gibbs Sampling can be used to simulate a Markov chain distribution of unknown parameter <span class="math inline">\(\theta\)</span>. Let’s call this distribution <span class="math inline">\(\pi (\theta)\)</span>.</p>
