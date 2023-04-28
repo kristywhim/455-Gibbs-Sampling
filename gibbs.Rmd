@@ -301,14 +301,14 @@ iterations <- 1:j
 par(mfrow=c(1,2))
 plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
 abline(h = a0, col = "red")
-text(x=200, y=1.2, 'a0', col = "red")
+text(x=200, y=1.3, 'a0', col = "red")
 abline(h = truea, col = "blue")
-text(x=200, y=truea+0.2, 'True a', col = "blue")
+text(x=200, y=truea+0.3, 'True a', col = "blue")
 plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
 abline(h = b0, col = "red")
 text(x=100, y=1.3, 'b0', col = "red")
 abline(h = trueb, col = "blue")
-text(x=100, y=trueb+0.2, 'True b', col = "blue")
+text(x=100, y=trueb+0.3, 'True b', col = "blue")
 ```
 
 ------------------------------------------------------------------------
