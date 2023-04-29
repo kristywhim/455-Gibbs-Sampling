@@ -8,7 +8,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 ## Background  
 
@@ -327,18 +327,21 @@ From observing our trace plots, we can say that our Gibbs Sampler is a good simu
 Many factors can determine our trace plots. Observed data ("Xsum"), (the way of choosing) the starting values of both parameters, sample size ("$N$"), number of
 iterations ("$j$") - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
-wisely on starting value, it may takes us less time to see that the
+wisely on starting value, it may take us less time to see that the
 values $a$ and $b$ converge (greater mixing rate: evidence of a good
 MCMC algorithm performance) and their trace plots become stable.  
 
 Noting that fluctuations are not necessarily bad. Mixing rate, which is
-how fast that sample averages converage, determines MCMC performance.
+how fast that sample averages coverage, determines MCMC performance.
 Our trace plots could be improved by changing the initial starting
-values, $a_0, b_0$, and factors mentioned above all come in to play in
+values, $(a_0, b_0)$, and factors mentioned above all come in to play in
 determining the convergence shape of the trace plots.
 
 ## Exploring  
-We can also observe what our trace plots would look like under less ideal conditions. For example, what would happen if we chose a starting value that was very far away from our true $a$ and $b$? In this trial, we set $a$ and $b$ to each start at 100.
+We can also observe what our trace plots would look like under less ideal conditions. 
+
+*Different starting values*
+For example, what would happen if we choose a starting value that was very far away from our true $a$ and $b$? In this trial, we set $a$ and $b$ to each start at 100.
 
 ```{r, include=FALSE}
 set.seed(1)
@@ -387,8 +390,14 @@ text(x=850, y=trueb+0.5, 'True b', col = "blue")
 
 ![High Starting Point: a = 100, b = 100](img/highsp.png)
 
+Let's check the mean and median of these posterior samples, and compare them with our true values of $a=3$ and $b=4$
+```{r}
+# the mean and median of posterior samples
+c(mean(alphas[20:1000]),median(alphas[20:1000]))
+c(mean(betas[20:1000]),median(betas[20:1000]))
+```
 
-On the other hand, what happens if we pick an extremely small starting point?
+On the other hand, what happens if we pick a pair of extremely small starting points?
 ```{r, include=FALSE}
 set.seed(1)
 # true data distribution
@@ -437,20 +446,32 @@ text(x=850, y=trueb+0.5, 'True b', col = "blue")
 
 ![Low Starting Point: a = 0.0001, b = 0.0001](img/lowsp.png)
 
-In both extremes, our Gibbs Sampler has a good mixing rate and fluctuates around the true values for $a$ and $b$ after approximately 100 trials.      
+Let's check the posterior mean and median again:
+```{r}
+# the mean and median of posterior samples
+c(mean(alphas[100:1000]),median(alphas[100:1000]))
+c(mean(betas[100:1000]),median(betas[100:1000]))
+```
 
+In both extremes, our Gibbs Sampler has a good mixing rate and fluctuates around the true values for $a$ and $b$ after approximately 100 trials (this is by eyeballing - we should really look in depth at the cut off of burn in if we want to be more precise).      
+
+*Different prior distributions*
 
 Another place to explore would be if we used a different prior. In our model, we used a joint prior of $p(a,b) = e^{-a-b} \quad \text{for} (a,b>0)$ with individual priors $a {\sim} \text{Gamma}(1,1)$ and $b{\sim} \text{Gamma}(1,1)$. Hypothetically, what if our priors had higher rates?  
 $$a{\sim} \text{Gamma}(1,5)$$ 
 $$b{\sim} \text{Gamma}(1,5)$$
-This would change our conditional distributionns to be:
+
+This would change our conditional distributions to be:
 
 $$
 a|b,\vec{X}\sim \text{Gamma}(n+1,b\sum_{i=1}^nx_i +5)
 $$
+
 $$
 b|a,\vec{X}\sim \text{Gamma}(n+1,a\sum_{i=1}^nx_i +5)
 $$
+
+
 ```{r, include=FALSE}
 set.seed(1)
 # true data distribution
@@ -503,13 +524,12 @@ text(x=850, y=trueb+0.5, 'True b', col = "blue")
 
 ![Changing Priors to Gamma(1,5)](img/difpriors.png)
 
-With a different prior, we can see that our Gibbs Sampler isn't as good. While it manages to converge and fluctuate around the true $a$ value, it hasn't begun fluctuating around the true $b$ value, even after 1000 trials.  
-
+With a different prior distribution of $a$ and $b$, we can see that our Gibbs Sampler isn't as good. While it manages to converge and fluctuate around the true $a$ value, it hasn't begun fluctuating around the true $b$ value, even after 1000 trials.  
 
 ## Main Takeaways 
 
 1. Gibbs Sampling is a great tool for simulating distributions of multivariate models when the joint distribution is too difficult to work with, but it is easy to sample from conditional probabilities.  
 
-2. A good Gibbs Sampler will have a high mixing rate and a low burn-in period.  
+2. A well-performed Gibbs Sampler will have a high mixing rate and a low burn-in period.  
 
-3. While it is not vital to choose a starting point near the true value, it is important that you have priors that reasonably match the data that you are trying to model. Otherwise, a Gibbs Sampling simulation may not find the correct values.
+3. While it is not vital to choose a starting point near the true value, it is important that you have priors that reasonably match the data that you are trying to model. Otherwise, a Gibbs Sampling simulation may not find the correct values - remember that the priors are selected subjectively so it is important to carry more background research and choose wisely. 
