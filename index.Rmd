@@ -6,7 +6,13 @@ site: distill::distill_website
 ---
 
 # Hi!
-Welcome to our project page on Gibbs Sampling - an example of Markov chain Monte Carlo (MCMC) algorithms that uses conditional probabilities to iteratively draw posterior samples for estimating the probabiltiy distribution of unknown parameters. This also ties with a cool application in statistical genetics to infer genotypes in unknown population groups with Hardy Weinberg Equilibrium. 
+Welcome to our project page on Gibbs Sampling - an example of Markov chain Monte Carlo (MCMC) algorithms that uses conditional probabilities to iteratively draw posterior samples for estimating the probabiltiy distribution of unknown parameters. 
+
+Our motivation: Gibbs sampling connects to our class because it is a sampling method used in Bayesian statistics. While frequentist statistics depend only on observed data, Bayesian statistics reflects both prior knowledge and observed data. When determining parameters in Bayesian statistics, it is labor intensive to compute the integration of multi-dimensional functions to estimate the posterior distribution.
+
+This gives rise to Markov Chain Monte Carlo integration (MCMC), an easy way to generate dependent samples. Gibbs sampling is a type of MCMC-based numerical integration method that relies on conditional distributions. This technique also ties with a cool application in statistical genetics to infer genotypes in unknown population groups with Hardy Weinberg Equilibrium. 
+
+# About this page
 
 To start exploring, simply navigate to tabs on the upper right corner:
 
@@ -16,11 +22,17 @@ To start exploring, simply navigate to tabs on the upper right corner:
 4) "Applications": Gibbs Sampling in statistical genetics
 5) "Wrap-up": Outro!
 
-> Learning Goals:
+
+**Learning Goals:**
+
 1.  Be able to explain what Gibbs Sampling is and when to use it.
+
 2.  In addition to knowing the uses of Gibbs sampling, understand the limitations of Gibbs sampling, and what properties of trace plots evidence good performance.
+
 3.  Simulate data from Gibbs sampling framework using R
+
 4.  Understand that Gibbs sampling is a special scenario of Metropolis Hasting with acceptance rate = 1
+
 5.  Get to know the application of Gibbs sampler in Statistical Genetics
 
 
