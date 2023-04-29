@@ -191,10 +191,11 @@ b\$, our Gibbs samples are: $(a_0, b_0)$, $(a_1, b_1)$, $(a_2, b_2)$,
 ...... $(a_n, b_n)$, where the $n^{th}$ sample $(a_n, b_n)$, will always
 depend on the previous one $(a_{n-1}, b_{n-1})$, forming a Markov Chain.
 
-We draw samples as: 1. Choose the initial sample $(a_0, b_0)$ 2. Draw
-$a_1\sim p(a|b_0,\vec{X})$, $b_1\sim p(b|a_1,\vec{X})$ - this is
-$(a_1, b_1)$ 3. Draw $a_2\sim p(a|b_1,\vec{X})$,
-$b_2\sim p(b|a_2,\vec{X})$
+We draw samples as:   
+1. Choose the initial sample $(a_0, b_0)$  
+2. Draw $a_1\sim p(a|b_0,\vec{X})$, $b_1\sim p(b|a_1,\vec{X})$ - this is
+$(a_1, b_1)$   
+3. Draw $a_2\sim p(a|b_1,\vec{X})$, $b_2\sim p(b|a_2,\vec{X})$  
 
 This means, after seeing some data $\vec{X}$, where we said
 $X_i\sim \text{Exponential}(ab)$, we will continuously draw posterior
@@ -336,7 +337,179 @@ Our trace plots could be improved by changing the initial starting
 values, $a_0, b_0$, and factors mentioned above all come in to play in
 determining the convergence shape of the trace plots.
 
+## Exploring  
+We can also observe what our trace plots would look like under less ideal conditions. For example, what would happen if we chose a starting value that was very far away from our true $a$ and $b$? In this trial, we set $a$ and $b$ to each start at 100.
 
-------------------------------------------------------------------------
-We can also observe what our trace plots would look like under less ideal conditions. For example, what would happen if we chose a starting value that was very far away from our true $a$ and $b$?
+```{r, include=FALSE}
+set.seed(1)
+# true data distribution
+N <- 100  # 100 Xi observations
+truea <- 3
+trueb <- 4
+X <- rexp(n = N, truea*trueb) #create 100 observations where X~exp(ab)
 
+Xsum = sum(X) # for later use
+
+# set up priors (mean)
+a0 <- mean(rgamma(1000, shape = 1, rate = 1))
+b0 <- mean(rgamma(1000, shape = 1, rate = 1))
+
+alphas <- c()
+betas <- c()
+
+# input a0, b0
+# we are choosing the starting points to be the mean of our prior distribution
+alphas[1] <- 100
+betas[1] <- 100
+
+# choose how many iterations of Gibbs sampling to run
+j <- 1000
+
+# run for j (1000) iterations
+
+for(i in 2:j){
+# update a and b
+a <- rgamma(n = 1, shape = N+1, rate = betas[i-1]*Xsum + 1)
+alphas[i] <- a
+
+b <- rgamma(n = 1, shape = N+1, rate = alphas[i]*Xsum + 1)
+betas[i] <- b
+}
+iterations <- 1:j
+par(mfrow=c(1,2))
+plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
+abline(h = truea, col = "blue")
+text(x=850, y=truea-0.5, 'True a', col = "blue")
+plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
+abline(h = trueb, col = "blue")
+text(x=850, y=trueb+0.5, 'True b', col = "blue")
+```
+
+![High Starting Point: a = 100, b = 100](img/highsp.png)
+
+
+On the other hand, what happens if we pick an extremely small starting point?
+```{r, include=FALSE}
+set.seed(1)
+# true data distribution
+N <- 100  # 100 Xi observations
+truea <- 3
+trueb <- 4
+X <- rexp(n = N, truea*trueb) #create 100 observations where X~exp(ab)
+
+Xsum = sum(X) # for later use
+
+# set up priors (mean)
+a0 <- mean(rgamma(1000, shape = 1, rate = 1))
+b0 <- mean(rgamma(1000, shape = 1, rate = 1))
+
+alphas <- c()
+betas <- c()
+
+# input a0, b0
+# we are choosing the starting points to be the mean of our prior distribution
+alphas[1] <- 0.0001
+betas[1] <- 0.0001
+
+# choose how many iterations of Gibbs sampling to run
+j <- 1000
+
+# run for j (1000) iterations
+
+for(i in 2:j){
+# update a and b
+a <- rgamma(n = 1, shape = N+1, rate = betas[i-1]*Xsum + 1)
+alphas[i] <- a
+
+b <- rgamma(n = 1, shape = N+1, rate = alphas[i]*Xsum + 1)
+betas[i] <- b
+}
+iterations <- 1:j
+par(mfrow=c(1,2))
+plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
+abline(h = truea, col = "blue")
+text(x=850, y=truea-0.5, 'True a', col = "blue")
+plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
+abline(h = trueb, col = "blue")
+text(x=850, y=trueb+0.5, 'True b', col = "blue")
+```
+
+
+![Low Starting Point: a = 0.0001, b = 0.0001](img/lowsp.png)
+
+In both extremes, our Gibbs Sampler has a good mixing rate and fluctuates around the true values for $a$ and $b$ after approximately 100 trials.      
+
+
+Another place to explore would be if we used a different prior. In our model, we used a joint prior of $p(a,b) = e^{-a-b} \quad \text{for} (a,b>0)$ with individual priors $a {\sim} \text{Gamma}(1,1)$ and $b{\sim} \text{Gamma}(1,1)$. Hypothetically, what if our priors had higher rates?  
+$$a{\sim} \text{Gamma}(1,5)$$ 
+$$b{\sim} \text{Gamma}(1,5)$$
+This would change our conditional distributionns to be:
+
+$$
+a|b,\vec{X}\sim \text{Gamma}(n+1,b\sum_{i=1}^nx_i +5)
+$$
+$$
+b|a,\vec{X}\sim \text{Gamma}(n+1,a\sum_{i=1}^nx_i +5)
+$$
+```{r, include=FALSE}
+set.seed(1)
+# true data distribution
+N <- 100  # 100 Xi observations
+truea <- 3
+trueb <- 4
+X <- rexp(n = N, truea*trueb) #create 100 observations where X~exp(ab)
+
+Xsum = sum(X) # for later use
+
+# set up priors (mean)
+a0 <- mean(rgamma(1000, shape = 1, rate = 5))
+b0 <- mean(rgamma(1000, shape = 1, rate = 5))
+
+alphas <- c()
+betas <- c()
+
+# input a0, b0
+# we are choosing the starting points to be the mean of our prior distribution
+alphas[1] <- a0
+betas[1] <- b0
+
+# choose how many iterations of Gibbs sampling to run
+j <- 1000
+
+# run for j (1000) iterations
+
+for(i in 2:j){
+# update a and b
+a <- rgamma(n = 1, shape = N+1, rate = betas[i-1]*Xsum + 5)
+alphas[i] <- a
+
+b <- rgamma(n = 1, shape = N+1, rate = alphas[i]*Xsum + 5)
+betas[i] <- b
+}
+iterations <- 1:j
+par(mfrow=c(1,2))
+plot(alphas ~ iterations, xlab = 'Iteration', ylab = expression(alpha), type = 'l')
+abline(h = a0, col = "red")
+text(x=850, y= a0 + 0.5, 'a0', col = "red")
+abline(h = truea, col = "blue")
+text(x=850, y=truea-0.5, 'True a', col = "blue")
+plot(betas ~ iterations, xlab = 'Iteration', ylab = expression(beta), type = 'l')
+abline(h = b0, col = "red")
+text(x=850, y=b0 + 0.5, 'b0', col = "red")
+abline(h = trueb, col = "blue")
+text(x=850, y=trueb+0.5, 'True b', col = "blue")
+```
+
+
+![Changing Priors to Gamma(1,5)](img/difpriors.png)
+
+With a different prior, we can see that our Gibbs Sampler isn't as good. While it manages to converge and fluctuate around the true $a$ value, it hasn't begun fluctuating around the true $b$ value, even after 1000 trials.  
+
+
+## Main Takeaways 
+
+1. Gibbs Sampling is a great tool for simulating distributions of multivariate models when the joint distribution is too difficult to work with, but it is easy to sample from conditional probabilities.  
+
+2. A good Gibbs Sampler will have a high mixing rate and a low burn-in period.  
+
+3. While it is not vital to choose a starting point near the true value, it is important that you have priors that reasonably match the data that you are trying to model. Otherwise, a Gibbs Sampling simulation may not find the correct values.

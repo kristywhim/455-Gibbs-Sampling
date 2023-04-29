@@ -2074,7 +2074,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2103,7 +2103,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Mathematical Statistic: Gibbs Sampling</a>
-<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2264,10 +2263,11 @@ p(a,b|\vec{X}) &amp;\propto p(a,b,\vec{X})\\
 b$, our Gibbs samples are: <span class="math inline">\((a_0, b_0)\)</span>, <span class="math inline">\((a_1, b_1)\)</span>, <span class="math inline">\((a_2, b_2)\)</span>,
 …… <span class="math inline">\((a_n, b_n)\)</span>, where the <span class="math inline">\(n^{th}\)</span> sample <span class="math inline">\((a_n, b_n)\)</span>, will always
 depend on the previous one <span class="math inline">\((a_{n-1}, b_{n-1})\)</span>, forming a Markov Chain.</p>
-<p>We draw samples as: 1. Choose the initial sample <span class="math inline">\((a_0, b_0)\)</span> 2. Draw
-<span class="math inline">\(a_1\sim p(a|b_0,\vec{X})\)</span>, <span class="math inline">\(b_1\sim p(b|a_1,\vec{X})\)</span> - this is
-<span class="math inline">\((a_1, b_1)\)</span> 3. Draw <span class="math inline">\(a_2\sim p(a|b_1,\vec{X})\)</span>,
-<span class="math inline">\(b_2\sim p(b|a_2,\vec{X})\)</span></p>
+<p>We draw samples as:<br />
+1. Choose the initial sample <span class="math inline">\((a_0, b_0)\)</span><br />
+2. Draw <span class="math inline">\(a_1\sim p(a|b_0,\vec{X})\)</span>, <span class="math inline">\(b_1\sim p(b|a_1,\vec{X})\)</span> - this is
+<span class="math inline">\((a_1, b_1)\)</span><br />
+3. Draw <span class="math inline">\(a_2\sim p(a|b_1,\vec{X})\)</span>, <span class="math inline">\(b_2\sim p(b|a_2,\vec{X})\)</span></p>
 <p>This means, after seeing some data <span class="math inline">\(\vec{X}\)</span>, where we said
 <span class="math inline">\(X_i\sim \text{Exponential}(ab)\)</span>, we will continuously draw posterior
 samples, from two dimensions <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, based on the following
@@ -2297,20 +2297,20 @@ b_{j+1}|a_{j+1},\vec{X}
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
-<span><span class='co'># set up priors (mean)</span></span>
-<span><span class='va'>a0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
-<span><span class='va'>b0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
-<span></span>
 <span><span class='co'># true data distribution</span></span>
 <span><span class='va'>N</span> <span class='op'>&lt;-</span> <span class='fl'>100</span>  <span class='co'># 100 Xi observations</span></span>
 <span><span class='va'>truea</span> <span class='op'>&lt;-</span> <span class='fl'>3</span></span>
 <span><span class='va'>trueb</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
 <span><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Exponential.html'>rexp</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='va'>N</span>, <span class='va'>truea</span><span class='op'>*</span><span class='va'>trueb</span><span class='op'>)</span> <span class='co'>#create 100 observations where X~exp(ab)</span></span>
 <span></span>
-<span><span class='va'>Xsum</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span> <span class='co'># for later use</span></span></code></pre>
+<span><span class='va'>Xsum</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span> <span class='co'># for later use</span></span>
+<span></span>
+<span><span class='co'># set up priors (mean)</span></span>
+<span><span class='va'>a0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>b0</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/GammaDist.html'>rgamma</a></span><span class='op'>(</span><span class='fl'>1000</span>, shape <span class='op'>=</span> <span class='fl'>1</span>, rate <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<p>Note that we are choosing to simulate a data distribution that matches our prior. Although this is unrealistic, it indicates that our Gibbs Sampling will be a good representation of our model.</p>
+<p>We are setting up our data distribution to be an exponential distribution with <span class="math inline">\(\lambda = ab\)</span>. In our data, we are setting the true value of <span class="math inline">\(a = 3\)</span> and the true value of <span class="math inline">\(b = 4\)</span>. Additionally, we are setting up our priors that we have previously calculated. Next, we need to choose starting values for our Gibbs sampler. It is important to choose a starting point that is reasonably close to our true values. Therefore, we decided to use the mean of our priors, <span class="math inline">\(a_0\)</span> and <span class="math inline">\(b_0\)</span>, to be our starting values.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span></span>
@@ -2328,7 +2328,7 @@ b_{j+1}|a_{j+1},\vec{X}
 </div>
 </div>
 <p>Note that we now choose our average prior values as our initial sample <span class="math inline">\((a_0, b_0)\)</span> as our initial sample. We are drawing 100 iid observations of <span class="math inline">\(X_i\)</span>s and running our Gibbs Sampling for 1000 iterations (<span class="math inline">\(j\)</span>).</p>
-<p>Since we already know that <span class="math inline">\((a=3, b=4)\)</span> are the “correct” values for <span class="math inline">\((a,b)\)</span>, we can predict that our Gibbs sampling will fluctuate around these values.</p>
+<p>Our sampler will start at our initial values <span class="math inline">\(a_0,b_0\)</span>. Then, it will update through 1000 iterations. Since we already know that <span class="math inline">\((a=3, b=4)\)</span> are the “correct” values for <span class="math inline">\((a,b)\)</span>, we can predict that our Gibbs sampling will fluctuate around these values.</p>
 <h2 id="run">Run!</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2356,7 +2356,7 @@ b_{j+1}|a_{j+1},\vec{X}
 </div>
 <p><img src="gibbs_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
-<p>This looks correct because our true values of a and b are 3 and 4 respectively.</p>
+<p>This looks correct because our true values of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are 3 and 4 respectively.</p>
 <p><em>Trace Plot: the behavior of the samples over j iterations:</em></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2382,7 +2382,7 @@ b_{j+1}|a_{j+1},\vec{X}
 shaping the trace plots?</p>
 <p><em>ANSWERS</em>:
 From observing our trace plots, we can say that our Gibbs Sampler is a good simulation to find our true values. We can see that even though it starts at our initial values, it quickly jumps to fluctuate around our true values. We could say that there is a burn in period of about 100 trials for both parameters because it takes about 100 trials to converge around the true values.</p>
-<p>Many factors can determine our trace plots. Observed data (“Xsum”), (the way of choosing) the starting values of both parameters, sample size (“N”), number of
+<p>Many factors can determine our trace plots. Observed data (“Xsum”), (the way of choosing) the starting values of both parameters, sample size (“<span class="math inline">\(N\)</span>”), number of
 iterations (“<span class="math inline">\(j\)</span>”) - if we run for enough long time, the samples will
 converge and starting value does not matter that much. If we choose
 wisely on starting value, it may takes us less time to see that the
@@ -2393,6 +2393,39 @@ how fast that sample averages converage, determines MCMC performance.
 Our trace plots could be improved by changing the initial starting
 values, <span class="math inline">\(a_0, b_0\)</span>, and factors mentioned above all come in to play in
 determining the convergence shape of the trace plots.</p>
+<h2 id="exploring">Exploring</h2>
+<p>We can also observe what our trace plots would look like under less ideal conditions. For example, what would happen if we chose a starting value that was very far away from our true <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>? In this trial, we set <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> to each start at 100.</p>
+<figure>
+<img src="img/highsp.png" alt="High Starting Point: a = 100, b = 100" />
+<figcaption aria-hidden="true">High Starting Point: a = 100, b = 100</figcaption>
+</figure>
+<p>On the other hand, what happens if we pick an extremely small starting point?</p>
+<figure>
+<img src="img/lowsp.png" alt="Low Starting Point: a = 0.0001, b = 0.0001" />
+<figcaption aria-hidden="true">Low Starting Point: a = 0.0001, b = 0.0001</figcaption>
+</figure>
+<p>In both extremes, our Gibbs Sampler has a good mixing rate and fluctuates around the true values for <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> after approximately 100 trials.</p>
+<p>Another place to explore would be if we used a different prior. In our model, we used a joint prior of <span class="math inline">\(p(a,b) = e^{-a-b} \quad \text{for} (a,b&gt;0)\)</span> with individual priors <span class="math inline">\(a {\sim} \text{Gamma}(1,1)\)</span> and <span class="math inline">\(b{\sim} \text{Gamma}(1,1)\)</span>. Hypothetically, what if our priors had higher rates?<br />
+<span class="math display">\[a{\sim} \text{Gamma}(1,5)\]</span>
+<span class="math display">\[b{\sim} \text{Gamma}(1,5)\]</span>
+This would change our conditional distributionns to be:</p>
+<p><span class="math display">\[
+a|b,\vec{X}\sim \text{Gamma}(n+1,b\sum_{i=1}^nx_i +5)
+\]</span>
+<span class="math display">\[
+b|a,\vec{X}\sim \text{Gamma}(n+1,a\sum_{i=1}^nx_i +5)
+\]</span></p>
+<figure>
+<img src="img/difpriors.png" alt="Changing Priors to Gamma(1,5)" />
+<figcaption aria-hidden="true">Changing Priors to Gamma(1,5)</figcaption>
+</figure>
+<p>With a different prior, we can see that our Gibbs Sampler isn’t as good. While it manages to converge and fluctuate around the true <span class="math inline">\(a\)</span> value, it hasn’t begun fluctuating around the true <span class="math inline">\(b\)</span> value, even after 1000 trials.</p>
+<h2 id="main-takeaways">Main Takeaways</h2>
+<ol type="1">
+<li><p>Gibbs Sampling is a great tool for simulating distributions of multivariate models when the joint distribution is too difficult to work with, but it is easy to sample from conditional probabilities.</p></li>
+<li><p>A good Gibbs Sampler will have a high mixing rate and a low burn-in period.</p></li>
+<li><p>While it is not vital to choose a starting point near the true value, it is important that you have priors that reasonably match the data that you are trying to model. Otherwise, a Gibbs Sampling simulation may not find the correct values.</p></li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
