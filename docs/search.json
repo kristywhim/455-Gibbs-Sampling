@@ -37,8 +37,8 @@
       "title": "Outro",
       "description": "Thank you for reading!",
       "author": [],
-      "contents": "\r\nThank you again for having interest on our page.\r\n\r\n\r\n\r\n",
-      "last_modified": "2023-04-29T16:00:06-05:00"
+      "contents": "\r\nThank you again for having interest on our page!\r\nTo sum up, Gibbs Sampling is an alternative to random sampling to derive posterior samples in Bayesian Statistics. It is a way of continuously selecting conditional and dependent samples from an unknown population with multiple dimensions.\r\nThe main point of Gibbs sampling is used when we want to draw samples for multiple unknown parameters, it is more simpler and feasible to sample from conditional distributions than from the joint.\r\n\r\n\r\n\r\n",
+      "last_modified": "2023-04-29T16:12:17-05:00"
     }
   ],
   "collections": ["posts/posts.json"]

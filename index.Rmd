@@ -16,6 +16,14 @@ To start exploring, simply navigate to tabs on the upper right corner:
 4) "Applications": Gibbs Sampling in statistical genetics
 5) "Wrap-up": Outro!
 
+> Learning Goals:
+1.  Be able to explain what Gibbs Sampling is and when to use it.
+2.  In addition to knowing the uses of Gibbs sampling, understand the limitations of Gibbs sampling, and what properties of trace plots evidence good performance.
+3.  Simulate data from Gibbs sampling framework using R
+4.  Understand that Gibbs sampling is a special scenario of Metropolis Hasting with acceptance rate = 1
+5.  Get to know the application of Gibbs sampler in Statistical Genetics
+
+
 **Have fun!**
 
 If you have any questions, please reach out to *kristy20011001@gmail.com* and *rbrodine@macalester.edu*. Thank you!
