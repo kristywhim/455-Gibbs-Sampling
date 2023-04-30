@@ -2074,7 +2074,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2103,6 +2103,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Mathematical Statistic: Gibbs Sampling</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2401,7 +2402,7 @@ For example, what would happen if we choose a starting value that was very far a
 <img src="img/highsp.png" alt="High Starting Point: a = 100, b = 100" />
 <figcaption aria-hidden="true">High Starting Point: a = 100, b = 100</figcaption>
 </figure>
-Let’s check the mean and median of these posterior samples, and compare them with our true values of <span class="math inline">\(a=3\)</span> and <span class="math inline">\(b=4\)</span>
+<p>Let’s check the mean and median of these posterior samples, and compare them with our true values of <span class="math inline">\(a=3\)</span> and <span class="math inline">\(b=4\)</span>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># the mean and median of posterior samples</span></span>
@@ -2418,7 +2419,7 @@ Let’s check the mean and median of these posterior samples, and compare them w
 <img src="img/lowsp.png" alt="Low Starting Point: a = 0.0001, b = 0.0001" />
 <figcaption aria-hidden="true">Low Starting Point: a = 0.0001, b = 0.0001</figcaption>
 </figure>
-Let’s check the posterior mean and median again:
+<p>Let’s check the posterior mean and median again:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># the mean and median of posterior samples</span></span>

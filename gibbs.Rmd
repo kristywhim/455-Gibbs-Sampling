@@ -390,7 +390,8 @@ text(x=850, y=trueb+0.5, 'True b', col = "blue")
 
 ![High Starting Point: a = 100, b = 100](img/highsp.png)
 
-Let's check the mean and median of these posterior samples, and compare them with our true values of $a=3$ and $b=4$
+Let's check the mean and median of these posterior samples, and compare them with our true values of $a=3$ and $b=4$:
+
 ```{r}
 # the mean and median of posterior samples
 c(mean(alphas[20:1000]),median(alphas[20:1000]))
@@ -398,6 +399,7 @@ c(mean(betas[20:1000]),median(betas[20:1000]))
 ```
 
 On the other hand, what happens if we pick a pair of extremely small starting points?
+
 ```{r, include=FALSE}
 set.seed(1)
 # true data distribution
@@ -447,6 +449,7 @@ text(x=850, y=trueb+0.5, 'True b', col = "blue")
 ![Low Starting Point: a = 0.0001, b = 0.0001](img/lowsp.png)
 
 Let's check the posterior mean and median again:
+
 ```{r}
 # the mean and median of posterior samples
 c(mean(alphas[100:1000]),median(alphas[100:1000]))
