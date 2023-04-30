@@ -14,5 +14,3 @@ To sum up, Gibbs Sampling is an alternative to random sampling to derive posteri
 The main point of Gibbs sampling is used when we want to draw samples for multiple unknown parameters, it is more simpler and feasible to sample from conditional distributions than from the joint.
 
 
-# References
-
